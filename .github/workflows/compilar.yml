@@ -1,0 +1,100 @@
+# Compila Guara cada vez que se sube un cambio a main, en las solicitudes de cambios y a mano desde la
+# pestaña Actions. Deja el .zip y su .sha256 como artefacto durante 14 días.
+# Con una etiqueta v* (por ejemplo v0.1.0) además publica la Release con el .zip y su .sha256.
+name: Compilar
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+# Permisos mínimos: solo leer el código. El trabajo que publica pide permiso de escritura para él solo.
+permissions:
+  contents: read
+
+concurrency:
+  group: compilar-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  VCPKG_ETIQUETA: '2026.10.16'
+
+jobs:
+  compilar:
+    name: Compilar Guara (x64)
+    # windows-2022 trae Visual Studio 2022, el mismo que usa compilar.ps1
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Revisar que la etiqueta coincida con version.txt
+        if: github.ref_type == 'tag'
+        shell: pwsh
+        run: |
+          $v = (Get-Content version.txt -TotalCount 1).Trim()
+          if ("v$v" -ne $env:GITHUB_REF_NAME) { throw "La etiqueta $($env:GITHUB_REF_NAME) no coincide con version.txt ($v)" }
+
+      - name: Carpetas de vcpkg
+        shell: pwsh
+        run: |
+          Add-Content -Path $env:GITHUB_ENV -Value "VCPKG_ROOT=$env:RUNNER_TEMP\vcpkg"
+          Add-Content -Path $env:GITHUB_ENV -Value "VCPKG_DEFAULT_BINARY_CACHE=$env:RUNNER_TEMP\vcpkg-binarios"
+          New-Item -ItemType Directory -Force "$env:RUNNER_TEMP\vcpkg-binarios" | Out-Null
+
+      - name: Bajar vcpkg ${{ env.VCPKG_ETIQUETA }}
+        shell: pwsh
+        run: git clone --depth 1 --branch $env:VCPKG_ETIQUETA https://github.com/microsoft/vcpkg $env:VCPKG_ROOT
+
+      # Las bibliotecas que compila vcpkg (sobre todo wxWidgets) se guardan para no compilarlas cada vez
+      - name: Caché de bibliotecas compiladas
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
+          key: vcpkg-${{ env.VCPKG_ETIQUETA }}-${{ hashFiles('vcpkg.json', 'triplets/**') }}
+          restore-keys: vcpkg-${{ env.VCPKG_ETIQUETA }}-
+
+      - name: Compilar
+        shell: powershell
+        run: |
+          if ($env:GITHUB_REF_TYPE -eq 'tag') { .\compilar.ps1 -Publicacion } else { .\compilar.ps1 }
+
+      - name: Empaquetar
+        shell: powershell
+        run: .\empaquetar.ps1
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: Guara-x64
+          path: |
+            publicar/Guara-*-x64.zip
+            publicar/Guara-*-x64.zip.sha256
+          retention-days: 14
+          if-no-files-found: error
+
+  publicar:
+    name: Publicar la Release
+    needs: compilar
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: Guara-x64
+          path: paquete
+
+      - name: Crear la Release con el .zip y su .sha256
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ETIQUETA: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          VERSION="${ETIQUETA#v}"
+          gh release create "$ETIQUETA" paquete/Guara-*-x64.zip paquete/Guara-*-x64.zip.sha256 \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Guara $VERSION" \
+            --notes "Guara $VERSION para Windows 10 y 11 (64 bits). Baja el .zip, descomprímelo y abre Guara.exe: no hay que instalar nada. La huella SHA256 del .zip está en el archivo .sha256."

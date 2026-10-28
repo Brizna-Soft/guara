@@ -1,0 +1,390 @@
+{
+  "version": 1,
+  "nota": "Lista del buscador de soluciones de Guara. Cada solución tiene un id (no cambiarlo: los avisos lo usan), un título, palabras para buscar, pasos seguros, botones que abren una herramienta de Windows y un enlace a una página oficial de Microsoft. Valores permitidos en «abrir»: ms-settings:..., windowsdefender:, taskmgr, taskmgr-inicio, devmgmt.msc, cleanmgr y mdsched.",
+  "soluciones": [
+    {
+      "id": "pc-lenta",
+      "titulo": "La PC está lenta",
+      "palabras": ["lenta", "lento", "lentitud", "tarda", "se traba", "trabada", "congela", "pegada", "cuelga", "rendimiento", "rápida"],
+      "pasos": [
+        "Guarda tu trabajo y reinicia la PC (Inicio > Encendido > Reiniciar). «Apagar» no siempre limpia la memoria.",
+        "Abre el Administrador de tareas (Ctrl + Mayús + Esc) y mira qué programa usa más CPU, memoria o disco.",
+        "Cierra los programas que no estés usando, sobre todo los navegadores con muchas pestañas.",
+        "Desactiva los programas que arrancan solos y no necesitas (Administrador de tareas > Aplicaciones de arranque). Si no sabes qué es un programa, déjalo como está.",
+        "Deja libre al menos un 10 % del disco.",
+        "Instala las actualizaciones de Windows y revisa que no haya virus con Seguridad de Windows."
+      ],
+      "herramientas": [
+        { "texto": "Abrir el Administrador de tareas", "abrir": "taskmgr" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/experience/performance-optimization/tips-to-improve-pc-performance-in-windows"
+    },
+    {
+      "id": "disco-lleno",
+      "titulo": "El disco está lleno",
+      "palabras": ["disco", "lleno", "espacio", "almacenamiento", "liberar", "sin espacio", "unidad c", "memoria llena"],
+      "pasos": [
+        "Abre Configuración > Sistema > Almacenamiento y mira qué ocupa más espacio.",
+        "Entra en «Archivos temporales» o en «Recomendaciones de limpieza» y borra lo que Windows te sugiere. Revisa antes la carpeta Descargas por si hay algo que quieras guardar.",
+        "Vacía la Papelera de reciclaje, después de revisar que no tenga nada que necesites.",
+        "Desinstala los programas y juegos que ya no uses (Configuración > Aplicaciones). Si no sabes qué es un programa, déjalo.",
+        "Pasa fotos y videos a un disco externo o a la nube."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Almacenamiento", "abrir": "ms-settings:storagesense" },
+        { "texto": "Abrir el Liberador de espacio", "abrir": "cleanmgr" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/experience/storage-filemanagement/free-up-drive-space-in-windows"
+    },
+    {
+      "id": "sin-sonido",
+      "titulo": "No hay sonido",
+      "palabras": ["sonido", "audio", "parlante", "parlantes", "bocina", "bocinas", "audífonos", "auriculares", "volumen", "no se escucha", "silencio"],
+      "pasos": [
+        "Revisa que el volumen no esté en cero ni en silencio (el ícono del parlante, junto al reloj).",
+        "Revisa que los parlantes o audífonos estén conectados y encendidos. Si son USB o Bluetooth, desconéctalos y vuelve a conectarlos.",
+        "En Configuración > Sistema > Sonido, elige en «Salida» el aparato correcto. A veces está elegido el monitor.",
+        "En esa misma página, usa «Solucionar problemas de sonido comunes».",
+        "Si nada funciona, reinicia la PC e instala las actualizaciones de Windows."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Sonido", "abrir": "ms-settings:sound" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/hardware/audio/fix-sound-or-audio-problems-in-windows"
+    },
+    {
+      "id": "wifi",
+      "titulo": "El Wi-Fi no conecta",
+      "palabras": ["wifi", "wi-fi", "internet", "red", "conexión", "conectar", "router", "módem", "señal", "inalámbrica", "sin internet"],
+      "pasos": [
+        "Revisa que el Wi-Fi esté activado y que el modo avión esté apagado (junto al reloj).",
+        "Apaga el módem o router, espera 30 segundos y vuelve a encenderlo.",
+        "Si otros aparatos tampoco tienen internet, el problema es del servicio: llama a tu proveedor.",
+        "En Configuración > Red e Internet > Wi-Fi > Administrar redes conocidas, elige tu red, pulsa «Olvidar» y vuelve a conectarte con la contraseña.",
+        "Acércate al router para descartar que la señal sea débil."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Wi-Fi", "abrir": "ms-settings:network-wifi" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/experience/connectivity-networking/fix-wi-fi-connection-issues-in-windows"
+    },
+    {
+      "id": "pantalla-azul",
+      "titulo": "Sale una pantalla azul y la PC se reinicia",
+      "palabras": ["pantalla azul", "pantallazo", "bsod", "código de detención", "error", "se reinicia", "se cuelga", "crash"],
+      "pasos": [
+        "Anota el código que aparece (por ejemplo, DPC_WATCHDOG_VIOLATION). Guara lo muestra en «Apagados inesperados y pantallas azules» si quedó registrado.",
+        "Piensa qué cambió justo antes: un programa, un controlador o un aparato nuevo. Quítalo o desconéctalo y prueba.",
+        "Instala las actualizaciones de Windows, también las opcionales de controladores.",
+        "Actualiza el controlador de la tarjeta gráfica y el del chipset desde la página del fabricante de tu PC o de tu tarjeta madre.",
+        "Revisa la memoria con el Diagnóstico de memoria de Windows. Guarda tu trabajo antes: la PC se reinicia para hacer la prueba.",
+        "Si pasa al jugar o con mucho trabajo, revisa que la PC no se caliente."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Windows Update", "abrir": "ms-settings:windowsupdate" },
+        { "texto": "Abrir el Diagnóstico de memoria", "abrir": "mdsched" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/experience/performance-optimization/troubleshooting-windows-unexpected-restarts-and-stop-code-errors"
+    },
+    {
+      "id": "windows-update",
+      "titulo": "Windows Update da error o no actualiza",
+      "palabras": ["windows update", "actualización", "actualizaciones", "actualizar", "no actualiza", "error", "falla", "parche"],
+      "pasos": [
+        "Revisa que tengas internet y al menos 10 GB libres en el disco C:.",
+        "Reinicia la PC y vuelve a pulsar «Buscar actualizaciones».",
+        "Usa el solucionador de Windows Update: Configuración > Sistema > Solucionar problemas > Otros solucionadores de problemas.",
+        "Desconecta los USB y discos externos que no necesites mientras se actualiza.",
+        "Si sale un código de error (por ejemplo, 0x80070002), búscalo en la página de ayuda de Microsoft."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Windows Update", "abrir": "ms-settings:windowsupdate" },
+        { "texto": "Abrir Solucionar problemas", "abrir": "ms-settings:troubleshoot" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/deployment/updates-lifecycle/troubleshoot-problems-updating-windows"
+    },
+    {
+      "id": "impresora",
+      "titulo": "La impresora no imprime",
+      "palabras": ["impresora", "imprimir", "imprime", "impresión", "cola", "escáner", "hp", "epson", "canon", "brother"],
+      "pasos": [
+        "Revisa que la impresora esté encendida, con papel y tinta, y sin luces de error.",
+        "Revisa el cable USB, o que la impresora y la PC estén en la misma red Wi-Fi.",
+        "Apaga la impresora y la PC, y vuelve a encenderlas.",
+        "En Configuración > Bluetooth y dispositivos > Impresoras y escáneres, elige tu impresora: revisa que no diga «Sin conexión» y abre la cola de impresión para cancelar los documentos trabados.",
+        "Instala el controlador más reciente desde la página oficial del fabricante de la impresora."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Impresoras", "abrir": "ms-settings:printers" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/hardware/printer/fix-printer-connection-and-printing-problems-in-windows"
+    },
+    {
+      "id": "se-calienta",
+      "titulo": "La PC se calienta mucho o hace mucho ruido",
+      "palabras": ["calienta", "caliente", "calor", "temperatura", "ventilador", "abanico", "ruido", "sobrecalentamiento", "hierve"],
+      "pasos": [
+        "Deja libres las rejillas de ventilación. No uses la laptop sobre la cama, cojines o las piernas.",
+        "Abre el Administrador de tareas y cierra los programas que usen mucho procesador.",
+        "Con la PC apagada y desconectada, limpia el polvo de las rejillas y de los ventiladores con aire comprimido.",
+        "Usa la PC en un lugar fresco, sin sol directo.",
+        "Si se apaga sola por el calor o el ventilador suena raro, llévala a un técnico: puede necesitar limpieza por dentro o pasta térmica nueva."
+      ],
+      "herramientas": [
+        { "texto": "Abrir el Administrador de tareas", "abrir": "taskmgr" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/surface/performance/what-to-try-if-your-surface-feels-too-warm"
+    },
+    {
+      "id": "bateria",
+      "titulo": "La batería dura poco",
+      "palabras": ["batería", "carga", "dura poco", "se descarga", "energía", "cargador", "laptop", "autonomía"],
+      "pasos": [
+        "Baja el brillo de la pantalla.",
+        "Activa el ahorro de batería en Configuración > Sistema > Energía y batería.",
+        "En esa misma página, mira qué aplicaciones gastan más batería y ciérralas si no las usas.",
+        "Desconecta los aparatos USB que no uses y apaga el Bluetooth si no lo necesitas.",
+        "Mira la «Salud» de la batería en Guara: si está por debajo del 50 %, conviene cambiarla."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Energía y batería", "abrir": "ms-settings:batterysaver" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/experience/power-battery/battery-saving-tips-for-windows"
+    },
+    {
+      "id": "usb",
+      "titulo": "No reconoce la memoria USB u otro aparato USB",
+      "palabras": ["usb", "memoria usb", "pendrive", "no reconoce", "no detecta", "puerto", "disco externo", "celular", "mouse", "ratón"],
+      "pasos": [
+        "Prueba otro puerto USB. En una PC de escritorio, mejor los de atrás.",
+        "Prueba el aparato en otra PC: si tampoco funciona, puede estar dañado.",
+        "Quita los concentradores (hubs) y las extensiones, y conéctalo directo.",
+        "Abre el Administrador de dispositivos y busca un triángulo amarillo: clic derecho > Actualizar controlador.",
+        "Instala las actualizaciones de Windows y reinicia."
+      ],
+      "herramientas": [
+        { "texto": "Abrir el Administrador de dispositivos", "abrir": "devmgmt.msc" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/hardware/usb/fix-usb-c-problems-in-windows"
+    },
+    {
+      "id": "microfono",
+      "titulo": "El micrófono no funciona",
+      "palabras": ["micrófono", "mic", "no me escuchan", "voz", "zoom", "meet", "discord", "teams", "grabar"],
+      "pasos": [
+        "Revisa que el micrófono no esté silenciado (a veces hay un botón en el cable o en los audífonos).",
+        "En Configuración > Privacidad y seguridad > Micrófono, activa el acceso al micrófono y permite las aplicaciones que lo usan.",
+        "En Configuración > Sistema > Sonido, en «Entrada», elige el micrófono correcto y habla para ver si se mueve la barra.",
+        "En la aplicación (Zoom, Meet, Discord u otra), elige el mismo micrófono en sus opciones."
+      ],
+      "herramientas": [
+        { "texto": "Abrir los permisos del micrófono", "abrir": "ms-settings:privacy-microphone" },
+        { "texto": "Abrir Sonido", "abrir": "ms-settings:sound" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/hardware/drivers/fix-microphone-problems"
+    },
+    {
+      "id": "pantalla-parpadea",
+      "titulo": "La pantalla parpadea",
+      "palabras": ["pantalla", "parpadea", "parpadeo", "titila", "monitor", "imagen", "rayas"],
+      "pasos": [
+        "Abre el Administrador de tareas (Ctrl + Mayús + Esc). Si también parpadea, es el controlador de video; si no, es una aplicación.",
+        "Actualiza el controlador de la tarjeta gráfica desde la página de AMD, NVIDIA o Intel, o con Windows Update.",
+        "Revisa que el cable del monitor esté bien conectado; prueba otro cable u otro puerto.",
+        "En Configuración > Sistema > Pantalla > Pantalla avanzada, prueba otra frecuencia de actualización.",
+        "Si empezó al instalar una aplicación, desinstálala y prueba."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Pantalla", "abrir": "ms-settings:display" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/hardware/display-graphics/troubleshoot-screen-flickering-in-windows"
+    },
+    {
+      "id": "teclado",
+      "titulo": "El teclado escribe otros símbolos",
+      "palabras": ["teclado", "escribe mal", "símbolos", "ñ", "arroba", "acentos", "tildes", "distribución", "idioma", "teclas"],
+      "pasos": [
+        "Si la ñ, las tildes o la arroba (@) salen en otro lugar, Windows tiene otra distribución de teclado.",
+        "Pulsa Windows + Espacio para cambiar entre las distribuciones instaladas.",
+        "En Configuración > Hora e idioma > Idioma y región, entra en las opciones de tu idioma y agrega el teclado que tienes (por ejemplo «Español (Latinoamérica)» o «Español»). Quita el que no usas.",
+        "Si escribe números en vez de letras, revisa Bloq Num; si todo sale en mayúsculas, revisa Bloq Mayús.",
+        "Si algunas teclas no responden, prueba con otro teclado para saber si está dañado."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Idioma y región", "abrir": "ms-settings:regionlanguage" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/hardware/input-devices/manage-the-language-and-keyboard-input-layout-settings-in-windows"
+    },
+    {
+      "id": "se-reinicia-sola",
+      "titulo": "La PC se reinicia o se apaga sola",
+      "palabras": ["reinicia", "reinicio", "se apaga", "apagado", "sola", "solo", "corte de luz", "apagón", "energía", "ups", "regulador"],
+      "pasos": [
+        "Si se reinicia para instalar actualizaciones, pon tu «Horario de uso» (horas activas) en Windows Update > Opciones avanzadas.",
+        "Si se apaga de golpe, puede ser un corte de luz o un bajón de voltaje: usa un regulador o una UPS.",
+        "Revisa que no se caliente y que el cable de corriente esté firme.",
+        "Si ves una pantalla azul antes, sigue la solución «Sale una pantalla azul y la PC se reinicia».",
+        "Mira en Guara la tarjeta «Apagados inesperados y pantallas azules» para saber cuántas veces pasó."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Opciones avanzadas de Windows Update", "abrir": "ms-settings:windowsupdate-options" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/deployment/updates-lifecycle/keep-your-pc-up-to-date-with-active-hours"
+    },
+    {
+      "id": "virus",
+      "titulo": "Creo que tengo un virus",
+      "palabras": ["virus", "malware", "hackeo", "hackearon", "publicidad", "anuncios", "ventanas raras", "troyano", "espía"],
+      "pasos": [
+        "Abre Seguridad de Windows > Protección antivirus y contra amenazas y pulsa «Examen rápido».",
+        "Si encuentra algo, sigue sus instrucciones para quitarlo.",
+        "Si el problema sigue, en «Opciones de examen» elige «Examen de Microsoft Defender sin conexión». La PC se reinicia y tarda unos 15 minutos.",
+        "Revisa en Configuración > Aplicaciones si hay programas que se instalaron hace poco sin que tú quisieras. Si no sabes qué es uno, pregunta antes de quitarlo.",
+        "Si crees que te robaron contraseñas, cámbialas desde otro aparato de confianza."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Seguridad de Windows", "abrir": "windowsdefender:" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/security/threat-malware-protection/virus-and-threat-protection-in-the-windows-security-app"
+    },
+    {
+      "id": "proteccion",
+      "titulo": "El antivirus está apagado o desactualizado",
+      "palabras": ["antivirus", "defender", "protección", "seguridad", "apagado", "desactivado", "tiempo real", "firmas", "definiciones"],
+      "pasos": [
+        "Abre Seguridad de Windows > Protección antivirus y contra amenazas.",
+        "Si «Protección en tiempo real» está apagada, actívala.",
+        "Pulsa «Buscar actualizaciones» en «Actualizaciones de protección antivirus y contra amenazas».",
+        "Si usas otro antivirus, ábrelo y revisa que esté activo y con la licencia vigente. No instales dos antivirus a la vez."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Seguridad de Windows", "abrir": "windowsdefender:" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/security/threat-malware-protection/virus-and-threat-protection-in-the-windows-security-app"
+    },
+    {
+      "id": "bluetooth",
+      "titulo": "El Bluetooth no conecta",
+      "palabras": ["bluetooth", "audífonos inalámbricos", "parlante bluetooth", "emparejar", "vincular", "control", "mouse inalámbrico"],
+      "pasos": [
+        "Revisa que el Bluetooth esté activado en la PC y que el aparato esté encendido y en modo de emparejamiento.",
+        "En Configuración > Bluetooth y dispositivos, quita el aparato y vuelve a agregarlo.",
+        "Revisa que el aparato tenga batería y que esté cerca de la PC.",
+        "Actualiza el controlador del Bluetooth desde el Administrador de dispositivos y reinicia."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Bluetooth", "abrir": "ms-settings:bluetooth" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/hardware/bluetooth/fix-bluetooth-problems-in-windows"
+    },
+    {
+      "id": "camara",
+      "titulo": "La cámara no funciona",
+      "palabras": ["cámara", "webcam", "video", "videollamada", "no se ve", "zoom", "meet"],
+      "pasos": [
+        "Revisa que la cámara no tenga una tapa o un interruptor de privacidad cerrado.",
+        "En Configuración > Privacidad y seguridad > Cámara, activa el acceso y permite las aplicaciones.",
+        "Cierra las otras aplicaciones que puedan estar usando la cámara.",
+        "Si es USB, prueba otro puerto. Después, reinicia la PC.",
+        "Actualiza el controlador de la cámara desde el Administrador de dispositivos."
+      ],
+      "herramientas": [
+        { "texto": "Abrir los permisos de la cámara", "abrir": "ms-settings:privacy-webcam" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/hardware/camera/camera-doesn-t-work-in-windows"
+    },
+    {
+      "id": "arranque-lento",
+      "titulo": "Tarda mucho en encender",
+      "palabras": ["encender", "enciende", "prender", "arranque", "arranca", "inicio", "iniciar", "tarda", "programas de inicio"],
+      "pasos": [
+        "Abre el Administrador de tareas > Aplicaciones de arranque y desactiva lo que no necesitas al encender (clic derecho > Deshabilitar). No se desinstala nada. Si no sabes qué es un programa, déjalo como está.",
+        "Instala las actualizaciones de Windows.",
+        "Deja libre al menos un 10 % del disco.",
+        "Si Windows está en un disco mecánico (HDD), cambiarlo por un SSD es la mejora más grande."
+      ],
+      "herramientas": [
+        { "texto": "Abrir las aplicaciones de arranque", "abrir": "taskmgr-inicio" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/experience/startup-boot/configure-startup-applications-in-windows"
+    },
+    {
+      "id": "dispositivo-error",
+      "titulo": "Un aparato tiene un error (triángulo amarillo)",
+      "palabras": ["dispositivo", "aparato", "controlador", "driver", "administrador de dispositivos", "triángulo amarillo", "código de error", "no funciona"],
+      "pasos": [
+        "Abre el Administrador de dispositivos y busca el aparato con un triángulo amarillo.",
+        "Haz doble clic en él: en «Estado del dispositivo» verás el código de error. Guara también lo muestra.",
+        "Haz clic derecho en él > Actualizar controlador > Buscar controladores automáticamente.",
+        "Si no se arregla, baja el controlador de la página oficial del fabricante de tu PC o del aparato.",
+        "Desconecta y vuelve a conectar el aparato, y reinicia la PC."
+      ],
+      "herramientas": [
+        { "texto": "Abrir el Administrador de dispositivos", "abrir": "devmgmt.msc" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/hardware/drivers/error-codes-in-device-manager-in-windows"
+    },
+    {
+      "id": "controlador-video",
+      "titulo": "Falta el controlador de la tarjeta gráfica",
+      "palabras": ["tarjeta gráfica", "video", "gráficos", "controlador", "driver", "juegos", "resolución", "adaptador de pantalla básico", "amd", "nvidia", "intel"],
+      "pasos": [
+        "Si en Guara la tarjeta aparece como «Adaptador de pantalla básico de Microsoft», a Windows le falta su controlador.",
+        "Busca en Windows Update > Opciones avanzadas > Actualizaciones opcionales.",
+        "O bájalo de la página oficial de AMD, NVIDIA o Intel, o de la del fabricante de tu laptop.",
+        "Reinicia la PC al terminar de instalarlo."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Actualizaciones opcionales", "abrir": "ms-settings:windowsupdate-optionalupdates" },
+        { "texto": "Abrir el Administrador de dispositivos", "abrir": "devmgmt.msc" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/update-drivers-through-device-manager-in-windows-ec62f46c-ff14-c91d-eead-d7126dc1f7b6"
+    },
+    {
+      "id": "disco-falla",
+      "titulo": "El disco avisa que puede fallar",
+      "palabras": ["disco", "falla", "dañado", "salud", "ssd", "hdd", "copia de seguridad", "respaldo", "perder archivos"],
+      "pasos": [
+        "Haz una copia de tus archivos importantes cuanto antes, en un disco externo o en la nube.",
+        "Mira la salud del disco en Configuración > Sistema > Almacenamiento > Discos y volúmenes.",
+        "Evita instalar o descargar cosas grandes en ese disco hasta cambiarlo.",
+        "Lleva la PC a un técnico para cambiar el disco."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Discos y volúmenes", "abrir": "ms-settings:disksandvolumes" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/experience/backup-recovery/back-up-and-restore-with-windows-backup"
+    },
+    {
+      "id": "pantalla-negra",
+      "titulo": "La pantalla se queda negra",
+      "palabras": ["pantalla negra", "sin imagen", "no da imagen", "monitor", "negro", "oscura", "no se ve"],
+      "pasos": [
+        "Pulsa Windows + Ctrl + Mayús + B: reinicia el controlador de video (suena un pitido y la pantalla parpadea).",
+        "Revisa que el monitor esté encendido y que el cable esté bien conectado en los dos extremos.",
+        "Pulsa Windows + P y elige «Solo pantalla de PC» o «Duplicar».",
+        "Si ves el puntero del mouse, pulsa Ctrl + Alt + Supr y reinicia desde el botón de encendido de la esquina.",
+        "Actualiza el controlador de la tarjeta gráfica."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Pantalla", "abrir": "ms-settings:display" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/hardware/display-graphics/troubleshooting-blank-screens-in-windows"
+    },
+    {
+      "id": "windows-10",
+      "titulo": "Mi Windows 10 ya no recibe actualizaciones",
+      "palabras": ["windows 10", "soporte", "fin del soporte", "windows 11", "ya no recibe", "actualizar"],
+      "pasos": [
+        "Windows 10 dejó de recibir actualizaciones de seguridad el 14 de octubre de 2025.",
+        "Abre Windows Update y mira si tu PC puede pasar a Windows 11 gratis.",
+        "Si no puede, haz copias de tus archivos y piensa en cambiar de PC cuando puedas.",
+        "Mientras tanto, mantén el antivirus al día y no abras archivos ni enlaces dudosos."
+      ],
+      "herramientas": [
+        { "texto": "Abrir Windows Update", "abrir": "ms-settings:windowsupdate" }
+      ],
+      "enlace": "https://support.microsoft.com/es-es/windows/deployment/updates-lifecycle/windows-10-support-has-ended-on-october-14-2025"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+﻿Guara: revisa tu PC y te dice qué hacer
+=======================================
+
+Guara es un programa gratis de Brizna Soft para Windows 10 y 11 (64 bits).
+Revisa tu PC sin cambiar nada y te explica en español sencillo qué tiene y qué anda mal.
+
+Cómo se usa
+-----------
+1. Abre Guara.exe. No hay que instalar nada.
+2. Espera unos segundos mientras dice «Revisando...».
+3. Lee los avisos: verde es «Bien», amarillo es «Revisa esto» y rojo es «Problema».
+4. Pulsa «Ver solución» o abre la pestaña «Buscar soluciones» para ver qué hacer.
+5. Si alguien te ayuda con tu PC, pulsa «Copiar informe» y pégale el texto.
+
+Tus datos
+---------
+- Guara solo lee: no cambia nada en Windows y no pide ser administrador.
+- No se conecta a internet, salvo cuando tú pulsas «Buscar actualización» o un enlace.
+- El informe no lleva tu nombre de usuario, el nombre de la PC, números de serie,
+  direcciones IP ni MAC. Las rutas de tu carpeta aparecen como %USERPROFILE%.
+- Solo guarda el tamaño de la ventana en %LOCALAPPDATA%\Guara.
+
+Reportar un problema: https://github.com/Brizna-Soft/guara/issues/new/choose
+Licencia: MIT (archivo LICENSE). Avisos de terceros: AVISOS-DE-TERCEROS.txt.
+Sin publicidad y sin recoger datos. Hecho con ayuda de IA.

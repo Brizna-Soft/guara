@@ -1,0 +1,25 @@
+name: Proponer una idea
+description: Algo que Guara debería revisar o un problema que el buscador de soluciones debería explicar.
+title: "[Idea] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por la idea. Recuerda que Guara solo lee: no cambia nada en la PC ni recoge datos.
+  - type: textarea
+    id: idea
+    attributes:
+      label: ¿Qué te gustaría que hiciera Guara?
+    validations:
+      required: true
+  - type: textarea
+    id: para-que
+    attributes:
+      label: ¿Para qué te serviría?
+      description: Por ejemplo, qué problema de tu PC te ayudaría a entender o a resolver.
+  - type: textarea
+    id: enlace
+    attributes:
+      label: Página de ayuda oficial (opcional)
+      description: Si propones un problema nuevo para el buscador, puedes poner un enlace de support.microsoft.com o learn.microsoft.com que lo explique.

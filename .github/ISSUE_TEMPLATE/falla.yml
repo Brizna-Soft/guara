@@ -1,0 +1,49 @@
+name: Reportar una falla
+description: Algo no funciona bien en Guara.
+title: "[Falla] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por avisar. Por favor, no pongas datos personales: ni correo, ni teléfono, ni contraseñas.
+        Si quieres, pega el informe de Guara (botón «Copiar informe»): no lleva tu nombre de usuario,
+        el nombre de tu PC, números de serie ni direcciones IP o MAC.
+  - type: textarea
+    id: que-paso
+    attributes:
+      label: ¿Qué pasó?
+      description: Cuéntalo con tus palabras.
+    validations:
+      required: true
+  - type: textarea
+    id: pasos
+    attributes:
+      label: ¿Qué hiciste antes de que pasara?
+      placeholder: |
+        1. Abrí Guara
+        2. Pulsé...
+  - type: textarea
+    id: esperado
+    attributes:
+      label: ¿Qué esperabas que pasara?
+  - type: input
+    id: version
+    attributes:
+      label: Versión de Guara
+      description: Está en Ayuda > Acerca de Guara.
+      placeholder: "0.1.0"
+  - type: dropdown
+    id: windows
+    attributes:
+      label: ¿Qué Windows tienes?
+      options:
+        - Windows 11
+        - Windows 10
+        - No sé
+  - type: textarea
+    id: informe
+    attributes:
+      label: Informe de Guara (opcional)
+      description: Pulsa «Copiar informe» en Guara y pégalo aquí.
+      render: text
