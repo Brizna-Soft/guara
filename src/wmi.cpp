@@ -45,7 +45,7 @@ namespace
 
 namespace wmi
 {
-    Conexion::Conexion(const wchar_t* espacio)
+    Conexion::Conexion(const wchar_t* espacio, const std::atomic<bool>* cancelar) : cancelar_(cancelar)
     {
         ComPtr<IWbemLocator> localizador;
         error_ = CoCreateInstance(CLSID_WbemLocator, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(localizador.GetAddressOf()));
@@ -63,9 +63,12 @@ namespace wmi
         if (FAILED(error_)) servicios_.Reset();
     }
 
-    HRESULT Conexion::Consultar(const wchar_t* wql, const std::function<void(IWbemClassObject*)>& cada, long esperaMs)
+    HRESULT Conexion::Consultar(const wchar_t* wql, const std::function<void(IWbemClassObject*)>& cada, long esperaMs,
+                                unsigned long long totalMs)
     {
         if (!servicios_) return FAILED(error_) ? error_ : E_FAIL;
+        if (cancelar_ && *cancelar_) return E_ABORT;
+        const unsigned long long inicio = GetTickCount64();
 
         Bstr lenguaje(L"WQL");
         Bstr consulta(wql);
@@ -75,8 +78,10 @@ namespace wmi
         if (FAILED(hr)) return hr;
         AjustarProxy(lista.Get());   // también es un proxy; si no lo es, el error no importa
 
-        for (int vueltas = 0; vueltas < 10000; vueltas++)
+        for (int vueltas = 0; vueltas < 2000; vueltas++)
         {
+            if (cancelar_ && *cancelar_) return E_ABORT;
+            if (GetTickCount64() - inicio > totalMs) return HRESULT_FROM_WIN32(ERROR_TIMEOUT);
             ComPtr<IWbemClassObject> objeto;
             ULONG devueltos = 0;
             hr = lista->Next(esperaMs, 1, objeto.ReleaseAndGetAddressOf(), &devueltos);
@@ -165,7 +170,9 @@ namespace wmi
         case static_cast<HRESULT>(WBEM_E_INVALID_QUERY):
             return L"Esta PC o esta versión de Windows no lo informa.";
         case static_cast<HRESULT>(0x800705B4L):   // HRESULT_FROM_WIN32(ERROR_TIMEOUT)
-            return L"Windows tardó demasiado en responder.";
+            return L"Windows tardó demasiado en responder (se agotó el tiempo).";
+        case E_ABORT:
+            return L"Se canceló la revisión.";
         default:
             break;
         }

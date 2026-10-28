@@ -102,6 +102,22 @@ namespace
         }
     }
 
+    // Correos, direcciones MAC y direcciones IPv4 sueltas en el texto. Guara no las pide a Windows para el
+    // informe; esto es una red de seguridad por si alguna viene dentro de un nombre.
+    std::wstring QuitarIdentificadores(const std::wstring& s)
+    {
+        static const std::wregex* correo = new std::wregex(
+            LR"([A-Za-z0-9._%+\-]+@[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)*\.[A-Za-z]{2,})");
+        static const std::wregex* mac = new std::wregex(
+            LR"(\b[0-9A-Fa-f]{2}([:\-])[0-9A-Fa-f]{2}(\1[0-9A-Fa-f]{2}){4}\b)");
+        static const std::wregex* ip = new std::wregex(
+            LR"((^|[^0-9.])(((25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]?[0-9]))(?![0-9]|\.[0-9]))");
+        std::wstring r = std::regex_replace(s, *correo, L"[correo]");
+        r = std::regex_replace(r, *mac, L"[MAC]");
+        r = std::regex_replace(r, *ip, L"$1[IP]");
+        return r;
+    }
+
     bool Contiene(const std::wstring& s, const std::wstring& buscar)
     {
         if (buscar.size() < 2) return false;
@@ -161,13 +177,13 @@ namespace privacidad
         for (const auto& e : d.equipos) Reemplazar(s, e, L"[equipo]", true);
         if (!d.usuario.empty()) Reemplazar(s, d.usuario, L"[usuario]", true);
         for (const auto& n : d.nombres) Reemplazar(s, n, L"[usuario]", true);
-        return s;
+        return QuitarIdentificadores(s);
     }
 
     std::wstring LimpiarFinal(const std::wstring& texto)
     {
         const Datos& d = Leer();
-        std::wstring s = texto;
+        std::wstring s = QuitarIdentificadores(texto);
         for (const auto& e : d.equipos) Reemplazar(s, e, L"[equipo]", true);
         if (!d.usuario.empty()) Reemplazar(s, d.usuario, L"[usuario]", true);
         return s;

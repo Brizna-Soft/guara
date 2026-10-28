@@ -37,6 +37,7 @@
 #include <windows.h>
 
 #include <algorithm>
+#include <atomic>
 #include <functional>
 #include <memory>
 #include <mutex>
@@ -249,9 +250,17 @@ public:
     ~PanelRevision() override
     {
         if (panelActual == this) panelActual = nullptr;
+        // Por si la ventana se destruye sin pasar por Detener(): un std::thread activo no se puede destruir
+        if (hilo_.joinable())
+        {
+            *cancelar_ = true;
+            hilo_.detach();
+        }
     }
 
     void Revisar();
+    // Cancela la revisión en curso y espera un poco a que termine (se llama al cerrar la ventana)
+    void Detener();
     void CopiarInforme();
     void GuardarInforme();
     void Progreso(const std::wstring& t, int generacion);
@@ -282,6 +291,9 @@ private:
     std::shared_ptr<Resultado> resultado_;
     bool revisando_ = false;
     int generacion_ = 0;
+    std::thread hilo_;                              // el hilo de la revisión, administrado por el panel
+    std::shared_ptr<std::atomic<bool>> cancelar_;   // se activa al cerrar; la revisión lo mira entre secciones
+    std::shared_ptr<std::atomic<bool>> terminado_;  // lo activa el hilo al acabar
 };
 
 PanelRevision::PanelRevision(wxWindow* padre, Ventana* ventana) : wxPanel(padre), ventana_(ventana)
@@ -293,7 +305,7 @@ PanelRevision::PanelRevision(wxWindow* padre, Ventana* ventana) : wxPanel(padre)
     botonRevisar_ = new wxButton(this, wxID_ANY, L"Volver a revisar");
     botonCopiar_ = new wxButton(this, wxID_ANY, L"Copiar informe");
     botonGuardar_ = new wxButton(this, wxID_ANY, L"Guardar informe...");
-    botonCopiar_->SetToolTip(L"Copia un informe para pedir ayuda. No lleva tu nombre de usuario ni el de tu PC.");
+    botonCopiar_->SetToolTip(L"Copia un informe para pedir ayuda, sin tu nombre de usuario ni el de tu PC. Revísalo antes de compartirlo.");
     botonGuardar_->SetToolTip(L"Guarda el mismo informe en un archivo de texto.");
     indicador_ = new wxActivityIndicator(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(20, 20)));
     estado_ = new wxStaticText(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxST_ELLIPSIZE_END);
@@ -341,21 +353,39 @@ void PanelRevision::Revisar()
     ActualizarBotones();
     if (!resultado_) ConstruirEspera();
 
-    std::thread([generacion]() {
+    // La revisión anterior ya terminó (revisando_ era false): solo falta recoger su hilo
+    if (hilo_.joinable()) hilo_.join();
+    cancelar_ = std::make_shared<std::atomic<bool>>(false);
+    terminado_ = std::make_shared<std::atomic<bool>>(false);
+    hilo_ = std::thread([generacion, cancelar = cancelar_, terminado = terminado_]() {
         std::shared_ptr<Resultado> r;
         try
         {
             auto progreso = [generacion](const std::wstring& t) {
                 AvisarAlPanel([t, generacion](PanelRevision* p) { p->Progreso(t, generacion); });
             };
-            r = std::make_shared<Resultado>(revision::Revisar(progreso));
+            r = std::make_shared<Resultado>(revision::Revisar(progreso, *cancelar));
         }
         catch (...)
         {
             r = std::make_shared<Resultado>();
         }
-        AvisarAlPanel([r, generacion](PanelRevision* p) { p->Mostrar(r, generacion); });
-    }).detach();
+        if (!*cancelar) AvisarAlPanel([r, generacion](PanelRevision* p) { p->Mostrar(r, generacion); });
+        *terminado = true;
+    });
+}
+
+void PanelRevision::Detener()
+{
+    if (!hilo_.joinable()) return;
+    *cancelar_ = true;
+    // La revisión mira «cancelar» entre secciones y dentro de las consultas largas, así que suele terminar
+    // enseguida. Si una consulta de Windows tarda más de 3 segundos, el hilo se suelta y termina con el programa.
+    for (int i = 0; i < 60 && !*terminado_; i++) Sleep(50);
+    if (*terminado_)
+        hilo_.join();
+    else
+        hilo_.detach();
 }
 
 void PanelRevision::Progreso(const std::wstring& t, int generacion)
@@ -583,7 +613,7 @@ void PanelRevision::CopiarInforme()
         wxTheClipboard->SetData(new wxTextDataObject(wxString(t)));
         wxTheClipboard->Close();
         wxTheClipboard->Flush();   // el informe sigue en el portapapeles aunque se cierre Guara
-        estado_->SetLabelText(L"Informe copiado. Pégalo donde pidas ayuda: no lleva tu nombre de usuario ni el de tu PC.");
+        estado_->SetLabelText(L"Informe copiado, sin tu nombre de usuario ni el de tu PC. Revísalo antes de pegarlo donde pidas ayuda.");
     }
     else
         estado_->SetLabelText(L"No pude usar el portapapeles. Inténtalo otra vez.");
@@ -749,7 +779,7 @@ void PanelSoluciones::MostrarDetalle(const soluciones::Solucion* s)
             enlace->SetVisitedColour(tema::Enlace());
             enlace->SetHoverColour(tema::Enlace());
             enlace->SetToolTip(s->enlace);
-            enlace->Bind(wxEVT_HYPERLINK, [](wxHyperlinkEvent& e) { ayuda::AbrirEnlace(e.GetURL()); });
+            enlace->Bind(wxEVT_HYPERLINK, [](wxHyperlinkEvent& e) { soluciones::AbrirEnlace(e.GetURL().ToStdWstring()); });
             v->Add(enlace, 0, wxTOP, FromDIP(8));
         }
     }
@@ -838,6 +868,7 @@ void Ventana::RecordarTamano()
 
 void Ventana::AlCerrar(wxCloseEvent& e)
 {
+    revision_->Detener();
     ajustes::Ventana a;
     a.x = normal_.x;
     a.y = normal_.y;

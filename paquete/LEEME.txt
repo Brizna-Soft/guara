@@ -15,10 +15,13 @@ Cómo se usa
 Tus datos
 ---------
 - Guara solo lee: no cambia nada en Windows y no pide ser administrador.
-- No se conecta a internet, salvo cuando tú pulsas «Buscar actualización» o un enlace.
-- El informe no lleva tu nombre de usuario, el nombre de la PC, números de serie,
-  direcciones IP ni MAC. Las rutas de tu carpeta aparecen como %USERPROFILE%.
-- Solo guarda el tamaño de la ventana en %LOCALAPPDATA%\Guara.
+- No se conecta a internet, salvo cuando tú pulsas «Buscar actualización» (consulta
+  GitHub) o un enlace de ayuda.
+- El informe no lleva números de serie, direcciones IP ni MAC, ni los nombres de tus
+  programas de inicio, impresoras o aparatos Bluetooth. Guara le quita lo mejor que
+  puede tu nombre de usuario, el de la PC y los correos, y tus rutas aparecen como
+  %USERPROFILE%. Revísalo antes de compartirlo.
+- Solo guarda el tamaño y la posición de la ventana en %LOCALAPPDATA%\Guara.
 
 Reportar un problema: https://github.com/Brizna-Soft/guara/issues/new/choose
 Licencia: MIT (archivo LICENSE). Avisos de terceros: AVISOS-DE-TERCEROS.txt.

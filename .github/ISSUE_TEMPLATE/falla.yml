@@ -7,8 +7,9 @@ body:
     attributes:
       value: |
         Gracias por avisar. Por favor, no pongas datos personales: ni correo, ni teléfono, ni contraseñas.
-        Si quieres, pega el informe de Guara (botón «Copiar informe»): no lleva tu nombre de usuario,
-        el nombre de tu PC, números de serie ni direcciones IP o MAC.
+        Si quieres, pega el informe de Guara (botón «Copiar informe»). Guara no pone en él números de serie,
+        direcciones IP ni MAC, y le quita lo mejor que puede tu nombre de usuario, el de tu PC y los correos.
+        Aun así, revísalo antes de pegarlo.
   - type: textarea
     id: que-paso
     attributes:
@@ -45,5 +46,5 @@ body:
     id: informe
     attributes:
       label: Informe de Guara (opcional)
-      description: Pulsa «Copiar informe» en Guara y pégalo aquí.
+      description: Pulsa «Copiar informe» en Guara, revísalo y pégalo aquí.
       render: text

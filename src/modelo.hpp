@@ -50,6 +50,7 @@ struct Seccion
     std::vector<Aviso> avisos;
     std::wstring tituloLista;
     std::vector<Elemento> lista;
+    bool listaEnInforme = true;   // false: el informe dice solo cuántos hay (por ejemplo, programas de inicio)
     std::vector<Accion> acciones;
 };
 

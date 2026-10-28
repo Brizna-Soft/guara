@@ -9,6 +9,46 @@
 
 namespace
 {
+    // Herramientas que se pueden abrir: una lista cerrada. «clave» es lo que va en «abrir» del JSON.
+    struct Destino
+    {
+        const wchar_t* clave;
+        const wchar_t* archivo;
+        const wchar_t* parametros;
+    };
+
+    const Destino Destinos[] = {
+        { L"taskmgr", L"taskmgr.exe", nullptr },
+        { L"taskmgr-inicio", L"taskmgr.exe", L"/0 /startup" },   // abre en «Aplicaciones de arranque»
+        { L"devmgmt.msc", L"devmgmt.msc", nullptr },
+        { L"cleanmgr", L"cleanmgr.exe", nullptr },
+        { L"mdsched", L"mdsched.exe", nullptr },
+        { L"windowsdefender:", L"windowsdefender:", nullptr },
+        // Páginas de Configuración (lista oficial de URI «ms-settings:» de Microsoft)
+        { L"ms-settings:batterysaver", L"ms-settings:batterysaver", nullptr },
+        { L"ms-settings:bluetooth", L"ms-settings:bluetooth", nullptr },
+        { L"ms-settings:disksandvolumes", L"ms-settings:disksandvolumes", nullptr },
+        { L"ms-settings:display", L"ms-settings:display", nullptr },
+        { L"ms-settings:network-wifi", L"ms-settings:network-wifi", nullptr },
+        { L"ms-settings:printers", L"ms-settings:printers", nullptr },
+        { L"ms-settings:privacy-microphone", L"ms-settings:privacy-microphone", nullptr },
+        { L"ms-settings:privacy-webcam", L"ms-settings:privacy-webcam", nullptr },
+        { L"ms-settings:regionlanguage", L"ms-settings:regionlanguage", nullptr },
+        { L"ms-settings:sound", L"ms-settings:sound", nullptr },
+        { L"ms-settings:storagesense", L"ms-settings:storagesense", nullptr },
+        { L"ms-settings:troubleshoot", L"ms-settings:troubleshoot", nullptr },
+        { L"ms-settings:windowsupdate", L"ms-settings:windowsupdate", nullptr },
+        { L"ms-settings:windowsupdate-optionalupdates", L"ms-settings:windowsupdate-optionalupdates", nullptr },
+        { L"ms-settings:windowsupdate-options", L"ms-settings:windowsupdate-options", nullptr },
+    };
+
+    const Destino* BuscarDestino(const std::wstring& abrir)
+    {
+        for (const auto& d : Destinos)
+            if (abrir == d.clave) return &d;
+        return nullptr;
+    }
+
     std::vector<soluciones::Solucion> Cargar()
     {
         std::vector<soluciones::Solucion> lista;
@@ -26,14 +66,21 @@ namespace
                 soluciones::Solucion x;
                 x.id = s.value("id", "");
                 x.titulo = texto::DesdeUtf8(s.value("titulo", ""));
+                // Solo enlaces a la ayuda oficial de Microsoft; cualquier otro se descarta y no se muestra
                 x.enlace = texto::DesdeUtf8(s.value("enlace", ""));
+                if (!soluciones::EnlacePermitido(x.enlace)) x.enlace.clear();
                 if (s.contains("palabras"))
                     for (const auto& p : s["palabras"]) x.palabras.push_back(texto::DesdeUtf8(p.get<std::string>()));
                 if (s.contains("pasos"))
                     for (const auto& p : s["pasos"]) x.pasos.push_back(texto::DesdeUtf8(p.get<std::string>()));
+                // Solo herramientas de la lista cerrada; las demás no tienen botón
                 if (s.contains("herramientas"))
                     for (const auto& h : s["herramientas"])
-                        x.herramientas.push_back({ texto::DesdeUtf8(h.value("texto", "")), texto::DesdeUtf8(h.value("abrir", "")) });
+                    {
+                        soluciones::Herramienta herramienta{ texto::DesdeUtf8(h.value("texto", "")), texto::DesdeUtf8(h.value("abrir", "")) };
+                        if (!herramienta.texto.empty() && soluciones::HerramientaPermitida(herramienta.abrir))
+                            x.herramientas.push_back(herramienta);
+                    }
 
                 std::wstring todo = x.titulo;
                 for (const auto& p : x.palabras) todo += L" " + p;
@@ -115,34 +162,33 @@ namespace soluciones
         return r;
     }
 
+    bool EnlacePermitido(const std::wstring& url)
+    {
+        if (url.empty() || url.size() > 400) return false;
+        for (wchar_t c : url)
+            if (c <= L' ' || c > 0x7E || c == L'"' || c == L'<' || c == L'>' || c == L'\\' || c == L'^' || c == L'`' ||
+                c == L'{' || c == L'}' || c == L'|')
+                return false;
+        return url.rfind(L"https://support.microsoft.com/", 0) == 0 || url.rfind(L"https://learn.microsoft.com/", 0) == 0;
+    }
+
+    bool HerramientaPermitida(const std::wstring& abrir)
+    {
+        return BuscarDestino(abrir) != nullptr;
+    }
+
     bool AbrirHerramienta(const std::wstring& abrir)
     {
-        std::wstring archivo;
-        const wchar_t* parametros = nullptr;
-        if (abrir == L"taskmgr")
-            archivo = L"taskmgr.exe";
-        else if (abrir == L"taskmgr-inicio")
-        {
-            archivo = L"taskmgr.exe";
-            parametros = L"/0 /startup";   // abre en «Aplicaciones de arranque»
-        }
-        else if (abrir == L"devmgmt.msc")
-            archivo = L"devmgmt.msc";
-        else if (abrir == L"cleanmgr")
-            archivo = L"cleanmgr.exe";
-        else if (abrir == L"mdsched")
-            archivo = L"mdsched.exe";
-        else if (abrir == L"windowsdefender:")
-            archivo = L"windowsdefender:";
-        else if (abrir.rfind(L"ms-settings:", 0) == 0 && abrir.size() < 80)
-        {
-            for (wchar_t c : abrir)
-                if (!((c >= L'a' && c <= L'z') || (c >= L'0' && c <= L'9') || c == L'-' || c == L':')) return false;
-            archivo = abrir;
-        }
-        else
-            return false;
-        auto r = reinterpret_cast<INT_PTR>(ShellExecuteW(nullptr, L"open", archivo.c_str(), parametros, nullptr, SW_SHOWNORMAL));
+        const Destino* d = BuscarDestino(abrir);
+        if (!d) return false;
+        auto r = reinterpret_cast<INT_PTR>(ShellExecuteW(nullptr, L"open", d->archivo, d->parametros, nullptr, SW_SHOWNORMAL));
+        return r > 32;
+    }
+
+    bool AbrirEnlace(const std::wstring& url)
+    {
+        if (!EnlacePermitido(url)) return false;
+        auto r = reinterpret_cast<INT_PTR>(ShellExecuteW(nullptr, L"open", url.c_str(), nullptr, nullptr, SW_SHOWNORMAL));
         return r > 32;
     }
 }

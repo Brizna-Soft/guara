@@ -27,6 +27,30 @@ namespace
     const wchar_t* ClaveVersion = L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion";
     const HRESULT NoEncontrado = static_cast<HRESULT>(WBEM_E_NOT_FOUND);
 
+    // La señal para cancelar de la revisión que corre en este hilo (la pone revision::Revisar)
+    thread_local const std::atomic<bool>* cancelarActual = nullptr;
+
+    bool Cancelado()
+    {
+        return cancelarActual && *cancelarActual;
+    }
+
+    // Inicia COM en el hilo de la revisión y lo libera al salir, también si algo falla (RAII)
+    class ComDelHilo
+    {
+    public:
+        ComDelHilo() : hr_(CoInitializeEx(nullptr, COINIT_MULTITHREADED)) {}
+        ~ComDelHilo()
+        {
+            if (SUCCEEDED(hr_)) CoUninitialize();
+        }
+        ComDelHilo(const ComDelHilo&) = delete;
+        ComDelHilo& operator=(const ComDelHilo&) = delete;
+
+    private:
+        HRESULT hr_;
+    };
+
     // ---------------------------------------------------------------- ayudas
 
     std::wstring RegistroTexto(HKEY raiz, const wchar_t* clave, const wchar_t* valor)
@@ -465,7 +489,7 @@ namespace
         s.titulo = L"Discos";
 
         std::vector<DiscoFisico> discos;
-        wmi::Conexion almacenamiento(L"ROOT\\Microsoft\\Windows\\Storage");
+        wmi::Conexion almacenamiento(L"ROOT\\Microsoft\\Windows\\Storage", cancelarActual);
         HRESULT hr = almacenamiento.Ok()
             ? almacenamiento.Consultar(L"SELECT DeviceId, FriendlyName, MediaType, BusType, HealthStatus, Size FROM MSFT_PhysicalDisk",
                                        [&](IWbemClassObject* o) {
@@ -611,13 +635,37 @@ namespace
         }
     }
 
-    // Nombre para el informe: los aparatos Bluetooth, los teléfonos y las impresoras de red pueden llevar el
-    // nombre de su dueño o del equipo, así que en el informe solo va el tipo de aparato.
-    std::wstring NombreParaInforme(const std::wstring& id, const std::wstring& nombre)
+    // Nombre para el informe. Las impresoras, los aparatos Bluetooth, los teléfonos y las salidas de audio pueden
+    // llevar en su nombre el de su dueño o el del equipo, así que en el informe solo va el tipo de aparato. Se
+    // reconocen por varias señales a la vez (clase, GUID de la clase, servicio, identificador y nombre), no solo
+    // por el comienzo del identificador. Ante la duda, mejor el nombre genérico.
+    std::wstring NombreParaInforme(const std::wstring& id, const std::wstring& nombre, const std::wstring& clase,
+                                   const std::wstring& claseGuid, const std::wstring& servicio)
     {
-        if (EmpiezaCon(id, L"BTH")) return L"Aparato Bluetooth";
-        if (EmpiezaCon(id, L"SWD\\PRINTENUM") || EmpiezaCon(id, L"WSDPRINT")) return L"Impresora";
-        if (EmpiezaCon(id, L"SWD\\WPDBUSENUM")) return L"Teléfono o aparato portátil";
+        const std::wstring idN = texto::Normalizar(id), nombreN = texto::Normalizar(nombre), servicioN = texto::Normalizar(servicio);
+        auto tiene = [](const std::wstring& t, const wchar_t* parte) { return t.find(parte) != std::wstring::npos; };
+        auto guid = [&](const wchar_t* g) { return Igual(claseGuid, g); };
+
+        bool bluetooth = Igual(clase, L"Bluetooth") || guid(L"{e0cbf06c-cd8b-4647-bb8a-263b43f0f974}") || tiene(idN, L"bth") ||
+                         tiene(idN, L"bluetooth") || tiene(idN, L"00805f9b34fb") ||   // final del identificador base de Bluetooth
+                         servicioN.rfind(L"bth", 0) == 0 || tiene(servicioN, L"hidbth") || servicioN == L"rfcomm" ||
+                         tiene(nombreN, L"bluetooth");
+        if (bluetooth) return L"Aparato Bluetooth";
+
+        bool impresora = Igual(clase, L"Printer") || Igual(clase, L"PrintQueue") || guid(L"{4d36e979-e325-11ce-bfc1-08002be10318}") ||
+                         guid(L"{1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc}") || tiene(idN, L"printenum") || tiene(idN, L"wsdprint") ||
+                         tiene(idN, L"usbprint") || tiene(idN, L"lptenum") || servicioN == L"usbprint" ||
+                         tiene(nombreN, L"impresora") || tiene(nombreN, L"printer") || tiene(nombreN, L"fax") ||
+                         tiene(nombreN, L"print to pdf") || tiene(nombreN, L"xps");
+        if (impresora) return L"Impresora";
+
+        if (Igual(clase, L"Image") || guid(L"{6bdd1fc6-810f-11d0-bec7-08002be2092f}") || tiene(nombreN, L"escaner") ||
+            tiene(nombreN, L"scanner"))
+            return L"Escáner o cámara";
+        if (Igual(clase, L"WPD") || guid(L"{eec5ad98-8080-425f-922a-dabf3de3f69a}") || tiene(idN, L"wpdbusenum"))
+            return L"Teléfono o aparato portátil";
+        if (Igual(clase, L"AudioEndpoint") || guid(L"{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}") || tiene(idN, L"mmdevapi"))
+            return L"Salida o entrada de audio";
         if (EmpiezaCon(id, L"SWD\\")) return L"Aparato de software";
         return nombre;
     }
@@ -630,23 +678,32 @@ namespace
         s.tituloLista = L"Dispositivos";
 
         int conProblema = 0, desactivados = 0;
+        auto leer = [&](IWbemClassObject* o) {
+            long long codigo = wmi::Entero(o, L"ConfigManagerErrorCode").value_or(0);
+            if (codigo == 0 || codigo == 45) return;   // 45: no está conectado ahora, es normal
+            std::wstring nombre = wmi::Texto(o, L"Name");
+            if (nombre.empty()) nombre = L"Aparato desconocido";
+            std::wstring detalle = L": " + SignificadoCodigo(codigo) + Formato(L" (código %lld)", codigo);
+            Elemento e;
+            e.texto = nombre + detalle;
+            e.textoInforme = NombreParaInforme(wmi::Texto(o, L"DeviceID"), nombre, wmi::Texto(o, L"PNPClass"),
+                                               wmi::Texto(o, L"ClassGuid"), wmi::Texto(o, L"Service")) + detalle;
+            s.lista.push_back(e);
+            if (codigo == 22) desactivados++;
+            else conProblema++;
+        };
         HRESULT hr = cimv2.Ok()
-            ? cimv2.Consultar(L"SELECT Name, ConfigManagerErrorCode, DeviceID FROM Win32_PnPEntity WHERE ConfigManagerErrorCode <> 0",
-                              [&](IWbemClassObject* o) {
-                                  long long codigo = wmi::Entero(o, L"ConfigManagerErrorCode").value_or(0);
-                                  if (codigo == 0 || codigo == 45) return;   // 45: no está conectado ahora, es normal
-                                  std::wstring nombre = wmi::Texto(o, L"Name");
-                                  std::wstring id = wmi::Texto(o, L"DeviceID");
-                                  if (nombre.empty()) nombre = L"Aparato desconocido";
-                                  std::wstring detalle = L": " + SignificadoCodigo(codigo) + Formato(L" (código %lld)", codigo);
-                                  Elemento e;
-                                  e.texto = nombre + detalle;
-                                  e.textoInforme = NombreParaInforme(id, nombre) + detalle;
-                                  s.lista.push_back(e);
-                                  if (codigo == 22) desactivados++;
-                                  else conProblema++;
-                              })
+            ? cimv2.Consultar(L"SELECT Name, ConfigManagerErrorCode, DeviceID, PNPClass, ClassGuid, Service FROM Win32_PnPEntity "
+                              L"WHERE ConfigManagerErrorCode <> 0", leer)
             : cimv2.Error();
+        if (FAILED(hr) && hr != E_ABORT && cimv2.Ok())
+        {
+            // Windows viejos no tienen PNPClass: se repite sin ella
+            s.lista.clear();
+            conProblema = desactivados = 0;
+            hr = cimv2.Consultar(L"SELECT Name, ConfigManagerErrorCode, DeviceID, ClassGuid, Service FROM Win32_PnPEntity "
+                                 L"WHERE ConfigManagerErrorCode <> 0", leer);
+        }
         if (FAILED(hr)) return SeccionNoDisponible("dispositivos", L"Dispositivos con problemas", wmi::ExplicarError(hr));
 
         s.datos.push_back({ L"Con problemas", conProblema == 0 ? std::wstring(L"Ninguno") : std::to_wstring(conProblema) });
@@ -758,7 +815,7 @@ namespace
                                               (p.ACLineStatus == 1 ? L", conectada a la corriente" : L", usando la batería") });
 
         std::map<std::wstring, long long> diseno, completa;
-        wmi::Conexion w(L"ROOT\\WMI");
+        wmi::Conexion w(L"ROOT\\WMI", cancelarActual);
         HRESULT hr1 = w.Ok() ? w.Consultar(L"SELECT InstanceName, DesignedCapacity FROM BatteryStaticData",
                                            [&](IWbemClassObject* o) { diseno[wmi::Texto(o, L"InstanceName")] = wmi::Entero(o, L"DesignedCapacity").value_or(0); })
                              : w.Error();
@@ -808,7 +865,7 @@ namespace
             bool activo = false, alDia = true;
         };
         std::vector<Antivirus> antivirus;
-        wmi::Conexion centro(L"ROOT\\SecurityCenter2");
+        wmi::Conexion centro(L"ROOT\\SecurityCenter2", cancelarActual);
         HRESULT hrCentro = centro.Ok()
             ? centro.Consultar(L"SELECT displayName, productState FROM AntiVirusProduct",
                                [&](IWbemClassObject* o) {
@@ -825,20 +882,25 @@ namespace
         bool hayDefender = false, defenderPrincipal = false;
         std::optional<bool> tiempoReal;
         long long edadFirmas = -1;
-        wmi::Conexion defender(L"ROOT\\Microsoft\\Windows\\Defender");
+        wmi::Conexion defender(L"ROOT\\Microsoft\\Windows\\Defender", cancelarActual);
+        auto leerDefender = [&](IWbemClassObject* o) {
+            hayDefender = true;
+            std::wstring modo = wmi::Texto(o, L"AMRunningMode");
+            auto servicio = wmi::Booleano(o, L"AMServiceEnabled");
+            auto activado = wmi::Booleano(o, L"AntivirusEnabled");
+            tiempoReal = wmi::Booleano(o, L"RealTimeProtectionEnabled");
+            edadFirmas = wmi::Entero(o, L"AntivirusSignatureAge").value_or(-1);
+            defenderPrincipal = modo.empty() ? (activado.value_or(false) && servicio.value_or(false)) : Igual(modo, L"Normal");
+        };
+        // Solo las propiedades que se usan (así no se pide ningún identificador del equipo)
         HRESULT hrDefender = defender.Ok()
-            ? defender.Consultar(L"SELECT * FROM MSFT_MpComputerStatus",
-                                 [&](IWbemClassObject* o) {
-                                     hayDefender = true;
-                                     std::wstring modo = wmi::Texto(o, L"AMRunningMode");
-                                     auto servicio = wmi::Booleano(o, L"AMServiceEnabled");
-                                     auto activado = wmi::Booleano(o, L"AntivirusEnabled");
-                                     tiempoReal = wmi::Booleano(o, L"RealTimeProtectionEnabled");
-                                     edadFirmas = wmi::Entero(o, L"AntivirusSignatureAge").value_or(-1);
-                                     defenderPrincipal = modo.empty() ? (activado.value_or(false) && servicio.value_or(false))
-                                                                      : Igual(modo, L"Normal");
-                                 })
+            ? defender.Consultar(L"SELECT AMRunningMode, AMServiceEnabled, AntivirusEnabled, RealTimeProtectionEnabled, "
+                                 L"AntivirusSignatureAge FROM MSFT_MpComputerStatus", leerDefender)
             : defender.Error();
+        if (FAILED(hrDefender) && hrDefender != E_ABORT && defender.Ok() && !hayDefender)
+            // Las versiones viejas de Defender no tienen AMRunningMode
+            hrDefender = defender.Consultar(L"SELECT AMServiceEnabled, AntivirusEnabled, RealTimeProtectionEnabled, "
+                                            L"AntivirusSignatureAge FROM MSFT_MpComputerStatus", leerDefender);
 
         if (antivirus.empty() && !hayDefender)
             return SeccionNoDisponible("seguridad", L"Seguridad", wmi::ExplicarError(FAILED(hrCentro) ? hrCentro : hrDefender));
@@ -920,11 +982,15 @@ namespace
         EVT_HANDLE contextoDato = EvtCreateRenderContext(1, rutas, EvtRenderContextValues);
         DWORD error = ERROR_SUCCESS;
         std::vector<BYTE> buf(16384);
-        for (int vueltas = 0; vueltas < 100; vueltas++)
+        // Hasta 20 tandas de 32 eventos (de sobra para 30 días), 5 segundos por tanda y 20 segundos en total
+        const unsigned long long inicio = GetTickCount64();
+        for (int vueltas = 0; vueltas < 20; vueltas++)
         {
+            if (Cancelado()) { error = ERROR_CANCELLED; break; }
+            if (GetTickCount64() - inicio > 20000) { error = ERROR_TIMEOUT; break; }
             EVT_HANDLE eventos[32];
             DWORD n = 0;
-            if (!EvtNext(consulta, 32, eventos, 10000, 0, &n))
+            if (!EvtNext(consulta, 32, eventos, 5000, 0, &n))
             {
                 DWORD e = GetLastError();
                 if (e != ERROR_NO_MORE_ITEMS) error = e;
@@ -1246,6 +1312,7 @@ namespace
         s.id = "inicio";
         s.titulo = L"Programas que arrancan con Windows";
         s.tituloLista = L"Programas";
+        s.listaEnInforme = false;   // sus nombres pueden ser personales: el informe dice solo cuántos son
 
         std::vector<Arranque> lista;
         LeerRun(HKEY_CURRENT_USER, 0, L"Run", lista);
@@ -1302,34 +1369,46 @@ namespace
         };
         Resultado r;
 
+        // Entre una sección y otra se mira si hay que cancelar (por ejemplo, porque se cerró la ventana).
+        // Si se cancela, se devuelve vacío: nadie lo va a mostrar.
         // El procesador primero: así su uso no incluye el trabajo de las consultas que vienen después
         paso(L"Revisando el procesador...");
         Seccion procesador = Intentar("procesador", L"Procesador", [] { return RevisarProcesador(); });
+        if (Cancelado()) return {};
 
         paso(L"Revisando Windows...");
-        wmi::Conexion cimv2(L"ROOT\\CIMV2");
+        wmi::Conexion cimv2(L"ROOT\\CIMV2", cancelarActual);
         Seccion sistema = Intentar("sistema", L"Sistema", [&] { return RevisarSistema(cimv2); });
+        if (Cancelado()) return {};
         paso(L"Revisando la memoria...");
         Seccion memoria = Intentar("memoria", L"Memoria", [&] { return RevisarMemoria(cimv2); });
+        if (Cancelado()) return {};
         paso(L"Revisando los discos...");
         Seccion discos = Intentar("discos", L"Discos", [] { return RevisarDiscos(); });
+        if (Cancelado()) return {};
         paso(L"Revisando la tarjeta gráfica...");
         Seccion grafica = Intentar("grafica", L"Tarjeta gráfica", [&] { return RevisarGrafica(cimv2); });
+        if (Cancelado()) return {};
         bool bateria = TieneBateria();
         Seccion seccionBateria;
         if (bateria)
         {
             paso(L"Revisando la batería...");
             seccionBateria = Intentar("bateria", L"Batería", [] { return RevisarBateria(); });
+            if (Cancelado()) return {};
         }
         paso(L"Buscando dispositivos con problemas...");
         Seccion dispositivos = Intentar("dispositivos", L"Dispositivos con problemas", [&] { return RevisarDispositivos(cimv2); });
+        if (Cancelado()) return {};
         paso(L"Revisando el antivirus...");
         Seccion seguridad = Intentar("seguridad", L"Seguridad", [] { return RevisarSeguridad(); });
+        if (Cancelado()) return {};
         paso(L"Leyendo el registro de eventos...");
         Seccion apagados = Intentar("apagados", L"Apagados inesperados y pantallas azules", [] { return RevisarApagados(); });
+        if (Cancelado()) return {};
         paso(L"Revisando los programas de inicio...");
         Seccion inicio = Intentar("inicio", L"Programas que arrancan con Windows", [] { return RevisarInicio(); });
+        if (Cancelado()) return {};
 
         r.secciones = { sistema, procesador, memoria, discos, grafica };
         if (bateria) r.secciones.push_back(seccionBateria);
@@ -1352,12 +1431,15 @@ namespace
 
 namespace revision
 {
-    Resultado Revisar(const std::function<void(const std::wstring&)>& progreso)
+    Resultado Revisar(const std::function<void(const std::wstring&)>& progreso, const std::atomic<bool>& cancelar)
     {
-        HRESULT com = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+        ComDelHilo com;   // se crea primero y se destruye al final: todas las conexiones de WMI se cierran antes
+        cancelarActual = &cancelar;
+        struct Limpiar
+        {
+            ~Limpiar() { cancelarActual = nullptr; }
+        } limpiar;
         privacidad::Preparar();
-        Resultado r = RevisarTodo(progreso);   // las conexiones de WMI se cierran antes de CoUninitialize
-        if (SUCCEEDED(com)) CoUninitialize();
-        return r;
+        return RevisarTodo(progreso);
     }
 }

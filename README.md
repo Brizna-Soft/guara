@@ -34,7 +34,8 @@ Cada parte se muestra en una tarjeta con un semáforo: verde **Bien**, amarillo 
 En la pestaña **Buscar soluciones** escribes lo que le pasa a tu PC (por ejemplo «lenta», «sonido», «wifi» o
 «pantalla azul») y ves pasos cortos y seguros, un botón que abre la herramienta de Windows que corresponde y un
 enlace a la página de ayuda oficial de Microsoft. Hay 24 problemas comunes. Los pasos nunca piden editar el
-registro, borrar archivos de Windows ni apagar el antivirus.
+registro, borrar archivos de Windows ni apagar el antivirus. Los botones solo abren una lista fija de
+herramientas de Windows, y los enlaces solo llevan a `support.microsoft.com` o `learn.microsoft.com`.
 
 ## Guara no cambia nada
 
@@ -44,15 +45,20 @@ registro, borrar archivos de Windows ni apagar el antivirus.
 - Los botones solo abren herramientas de Windows (por ejemplo, Configuración o el Administrador de tareas). Lo
   que hagas ahí lo decides tú.
 
-## Qué datos no salen de tu PC
+## Tus datos
 
 - Guara **no envía nada**: no tiene publicidad, ni estadísticas, ni nada parecido. Solo se conecta a internet si
-  tú pulsas **Buscar actualización** (consulta la página de versiones de este repositorio en GitHub) o un enlace.
+  tú pulsas **Buscar actualización** (consulta la página de versiones de este repositorio en GitHub) o un enlace
+  de ayuda.
 - El informe (**Copiar informe** y **Guardar informe...**) se queda en tu PC hasta que tú lo pegues o lo mandes.
-  **No incluye** tu nombre de usuario, el nombre de la PC, números de serie, direcciones IP ni MAC. Las rutas de
-  tu carpeta personal aparecen como `%USERPROFILE%`, y los aparatos Bluetooth, los teléfonos y las impresoras
-  salen sin su nombre, porque podría ser personal.
-- Lo único que guarda es el tamaño de la ventana, en `%LOCALAPPDATA%\Guara\ajustes.json`.
+  - Lleva datos de la PC (piezas, versiones, espacio libre y avisos) y la fecha y el código de los apagados
+    inesperados y pantallas azules de los últimos 30 días.
+  - Guara no pone en él números de serie, direcciones IP ni MAC, ni el contenido de tus archivos.
+  - No lleva los nombres de los programas de inicio (solo cuántos son) ni los de impresoras, aparatos Bluetooth,
+    teléfonos o salidas de audio con problemas (solo el tipo de aparato).
+  - Además, Guara quita lo mejor que puede tu nombre de usuario, el nombre de la PC y los correos, y cambia las
+    rutas de tu carpeta personal por `%USERPROFILE%`. Revísalo antes de compartirlo.
+- Lo único que guarda es el tamaño y la posición de la ventana, en `%LOCALAPPDATA%\Guara\ajustes.json`.
 
 ## Cómo usarlo
 
@@ -66,8 +72,8 @@ Puedes comprobar que el archivo es el original con su huella SHA256 (está en el
 ## Cómo reportar problemas
 
 Entra en [Reportar un problema](https://github.com/Brizna-Soft/guara/issues/new/choose) (también está en el menú
-**Ayuda** de Guara). Si quieres, pega el informe de **Copiar informe**: no lleva tus datos personales. Por
-favor, no pongas tu correo, teléfono ni contraseñas.
+**Ayuda** de Guara). Si quieres, pega el informe de **Copiar informe** después de revisarlo. Por favor, no pongas
+tu correo, teléfono ni contraseñas.
 
 ## Límites conocidos
 
