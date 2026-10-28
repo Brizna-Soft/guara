@@ -8,6 +8,8 @@ sin tus datos personales.
 
 La guara roja es el ave nacional de Honduras: lista y habladora, como este programa.
 
+![El buscador de soluciones de Guara, con los pasos para cuando la PC está lenta](docs/captura.png)
+
 Es de [Brizna Soft](https://brizna-soft.github.io): gratis, de código abierto, sin publicidad y sin recoger datos.
 
 ## Qué revisa
