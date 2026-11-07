@@ -81,11 +81,20 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write       # para la atestación de origen del .zip
+      attestations: write
     steps:
       - uses: actions/download-artifact@v8
         with:
           name: Guara-x64
           path: paquete
+
+      # Prueba pública de que el .zip lo armó GitHub con este código. Se comprueba con:
+      #   gh attestation verify <archivo.zip> --repo Brizna-Soft/guara
+      - name: Atestación de origen del .zip
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: paquete/Guara-*-x64.zip
 
       - name: Crear la Release con el .zip y su .sha256
         env:
