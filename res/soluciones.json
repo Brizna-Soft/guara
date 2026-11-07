@@ -12,7 +12,7 @@
         "Cierra los programas que no estés usando, sobre todo los navegadores con muchas pestañas.",
         "Desactiva los programas que arrancan solos y no necesitas (Administrador de tareas > Aplicaciones de arranque). Si no sabes qué es un programa, déjalo como está.",
         "Deja libre al menos un 10 % del disco.",
-        "Instala las actualizaciones de Windows (puede pedir reiniciar: guarda tu trabajo antes) y revisa que no haya virus con Seguridad de Windows."
+        "Las actualizaciones pueden pedir reiniciar: guarda tu trabajo antes. Instala las actualizaciones de Windows y revisa que no haya virus con Seguridad de Windows."
       ],
       "herramientas": [
         { "texto": "Abrir el Administrador de tareas", "abrir": "taskmgr" }
@@ -25,7 +25,7 @@
       "palabras": ["disco", "lleno", "espacio", "almacenamiento", "liberar", "sin espacio", "unidad c", "memoria llena"],
       "pasos": [
         "Abre Configuración > Sistema > Almacenamiento y mira qué ocupa más espacio.",
-        "Entra en «Archivos temporales» o en «Recomendaciones de limpieza» revisa cada cosa antes de marcarla y borra solo lo que estés seguro de no necesitar (se borra para siempre). Ojo con la carpeta Descargas y con «Instalación anterior de Windows»: si la borras, ya no podrás volver a esa versión.",
+        "Lo que borres aquí se borra para siempre, y si quitas «Instalación anterior de Windows» ya no podrás volver a esa versión. Con eso en mente, entra en «Archivos temporales» o en «Recomendaciones de limpieza», revisa cada cosa (ojo con la carpeta Descargas) y marca solo lo que estés seguro de no necesitar.",
         "Revisa la Papelera de reciclaje: vaciarla borra para siempre lo que tiene. Si no hay nada que necesites, vacíala.",
         "Desinstala los programas y juegos que ya no uses (Configuración > Aplicaciones). Si no sabes qué es un programa, déjalo.",
         "Pasa fotos y videos a un disco externo o a la nube."
@@ -45,7 +45,7 @@
         "Revisa que los parlantes o audífonos estén conectados y encendidos. Si son USB o Bluetooth, desconéctalos y vuelve a conectarlos.",
         "En Configuración > Sistema > Sonido, elige en «Salida» el aparato correcto. A veces está elegido el monitor.",
         "En esa misma página, usa «Solucionar problemas de sonido comunes».",
-        "Si nada funciona, reinicia la PC e instala las actualizaciones de Windows."
+        "Si nada funciona, guarda tu trabajo, reinicia la PC e instala las actualizaciones de Windows."
       ],
       "herramientas": [
         { "texto": "Abrir Sonido", "abrir": "ms-settings:sound" }
@@ -74,10 +74,10 @@
       "palabras": ["pantalla azul", "pantallazo", "bsod", "código de detención", "error", "se reinicia", "se cuelga", "crash"],
       "pasos": [
         "Anota el código que aparece (por ejemplo, DPC_WATCHDOG_VIOLATION). Guara lo muestra en «Apagados inesperados y pantallas azules» si quedó registrado.",
-        "Piensa qué cambió justo antes: un programa, un controlador o un aparato nuevo. Quítalo o desconéctalo y prueba (si es una memoria o un disco, espera a que terminen las copias y usa «Expulsar» antes).",
-        "Instala las actualizaciones de Windows, también las opcionales de controladores (puede pedir reiniciar: guarda tu trabajo antes).",
+        "Piensa qué cambió justo antes: un programa, un controlador o un aparato nuevo. Si es una memoria o un disco, espera a que terminen las copias y usa «Expulsar». Después quítalo o desconéctalo y prueba.",
+        "Las actualizaciones pueden pedir reiniciar: guarda tu trabajo antes. Instala las actualizaciones de Windows, también las opcionales de controladores.",
         "Actualiza el controlador de la tarjeta gráfica y el del chipset desde la página del fabricante de tu PC o de tu tarjeta madre.",
-        "Revisa la memoria con el Diagnóstico de memoria de Windows. Guarda tu trabajo antes: la PC se reinicia para hacer la prueba.",
+        "La PC se reinicia para esta prueba: guarda tu trabajo antes. Después revisa la memoria con el Diagnóstico de memoria de Windows.",
         "Si pasa al jugar o con mucho trabajo, revisa que la PC no se caliente."
       ],
       "herramientas": [
@@ -92,9 +92,9 @@
       "palabras": ["windows update", "actualización", "actualizaciones", "actualizar", "no actualiza", "error", "falla", "parche"],
       "pasos": [
         "Revisa que tengas internet y al menos 10 GB libres en el disco C:.",
-        "Reinicia la PC y vuelve a pulsar «Buscar actualizaciones».",
+        "Guarda tu trabajo, reinicia la PC y vuelve a pulsar «Buscar actualizaciones».",
         "Usa el solucionador de Windows Update: Configuración > Sistema > Solucionar problemas > Otros solucionadores de problemas.",
-        "Desconecta los USB y discos externos que no necesites mientras se actualiza. Antes, espera a que terminen las copias y usa «Expulsar» en las memorias y los discos.",
+        "Espera a que terminen las copias y usa «Expulsar» en las memorias y los discos. Después desconecta los USB y discos externos que no necesites mientras se actualiza.",
         "Si sale un código de error (por ejemplo, 0x80070002), búscalo en la página de ayuda de Microsoft."
       ],
       "herramientas": [
@@ -110,7 +110,7 @@
       "pasos": [
         "Revisa que la impresora esté encendida, con papel y tinta, y sin luces de error.",
         "Revisa el cable USB, o que la impresora y la PC estén en la misma red Wi-Fi.",
-        "Apaga la impresora y la PC, y vuelve a encenderlas.",
+        "Guarda tu trabajo. Después apaga la impresora y la PC, y vuelve a encenderlas.",
         "En Configuración > Bluetooth y dispositivos > Impresoras y escáneres, elige tu impresora: revisa que no diga «Sin conexión» y abre la cola de impresión para cancelar los documentos trabados.",
         "Instala el controlador más reciente desde la página oficial del fabricante de la impresora."
       ],
@@ -143,7 +143,7 @@
         "Baja el brillo de la pantalla.",
         "Activa el ahorro de batería en Configuración > Sistema > Energía y batería.",
         "En esa misma página, mira qué aplicaciones gastan más batería y ciérralas si no las usas.",
-        "Desconecta los aparatos USB que no uses (en memorias y discos, espera a que terminen las copias y usa «Expulsar») y apaga el Bluetooth si no lo necesitas (si tu mouse o teclado es Bluetooth, no lo apagues).",
+        "En memorias y discos, espera a que terminen las copias y usa «Expulsar». Si tu mouse o teclado es Bluetooth, deja el Bluetooth encendido. Después desconecta los aparatos USB que no uses y apaga el Bluetooth si no lo necesitas.",
         "Mira la «Salud» de la batería en Guara: si está por debajo del 50 %, conviene cambiarla."
       ],
       "herramientas": [
@@ -156,11 +156,11 @@
       "titulo": "No reconoce la memoria USB u otro aparato USB",
       "palabras": ["usb", "memoria usb", "pendrive", "no reconoce", "no detecta", "puerto", "disco externo", "celular", "mouse", "ratón"],
       "pasos": [
-        "Prueba otro puerto USB. En una PC de escritorio, mejor los de atrás. Si es una memoria o un disco, usa «Expulsar» antes de sacarlo.",
-        "Prueba el aparato en otra PC (si es una memoria o un disco, usa «Expulsar» antes de sacarlo): si tampoco funciona, puede estar dañado.",
-        "Quita los concentradores (hubs) y las extensiones, y conéctalo directo. Si por ahí hay una memoria o un disco, espera a que terminen las copias y usa «Expulsar» antes.",
+        "Si es una memoria o un disco, usa «Expulsar» antes de sacarlo. Después prueba otro puerto USB; en una PC de escritorio, mejor los de atrás.",
+        "Si es una memoria o un disco, usa «Expulsar» antes de sacarlo. Después pruébalo en otra PC: si tampoco funciona, puede estar dañado.",
+        "Si por ahí hay una memoria o un disco, espera a que terminen las copias y usa «Expulsar». Después quita los concentradores (hubs) y las extensiones, y conéctalo directo.",
         "Abre el Administrador de dispositivos y busca un triángulo amarillo: clic derecho > Actualizar controlador.",
-        "Instala las actualizaciones de Windows y reinicia."
+        "Guarda tu trabajo. Después instala las actualizaciones de Windows y reinicia."
       ],
       "herramientas": [
         { "texto": "Abrir el Administrador de dispositivos", "abrir": "devmgmt.msc" }
@@ -238,7 +238,7 @@
       "pasos": [
         "Abre Seguridad de Windows > Protección antivirus y contra amenazas y pulsa «Examen rápido».",
         "Si encuentra algo, sigue sus instrucciones para quitarlo.",
-        "Si el problema sigue, en «Opciones de examen» elige «Examen de Microsoft Defender sin conexión». La PC se reinicia y tarda unos 15 minutos.",
+        "Si el problema sigue: este examen reinicia la PC y tarda unos 15 minutos, así que guarda tu trabajo antes. Después, en «Opciones de examen», elige «Examen de Microsoft Defender sin conexión».",
         "Revisa en Configuración > Aplicaciones si hay programas que se instalaron hace poco sin que tú quisieras. Si no sabes qué es uno, pregunta antes de quitarlo.",
         "Si crees que te robaron contraseñas, cámbialas desde otro aparato de confianza."
       ],
@@ -270,7 +270,7 @@
         "Revisa que el Bluetooth esté activado en la PC y que el aparato esté encendido y en modo de emparejamiento.",
         "Antes: al agregarlo otra vez puede pedir un PIN (mira el manual del aparato), y si es tu único mouse o teclado, ten a mano uno con cable. Después, en Configuración > Bluetooth y dispositivos, quita el aparato y vuelve a agregarlo.",
         "Revisa que el aparato tenga batería y que esté cerca de la PC.",
-        "Actualiza el controlador del Bluetooth desde el Administrador de dispositivos y reinicia."
+        "Guarda tu trabajo. Después actualiza el controlador del Bluetooth desde el Administrador de dispositivos y reinicia."
       ],
       "herramientas": [
         { "texto": "Abrir Bluetooth", "abrir": "ms-settings:bluetooth" }
@@ -285,7 +285,7 @@
         "Revisa que la cámara no tenga una tapa o un interruptor de privacidad cerrado.",
         "En Configuración > Privacidad y seguridad > Cámara, activa el acceso y permite las aplicaciones.",
         "Cierra las otras aplicaciones que puedan estar usando la cámara.",
-        "Si es USB, prueba otro puerto. Después, reinicia la PC.",
+        "Si es USB, prueba otro puerto. Después guarda tu trabajo y reinicia la PC.",
         "Actualiza el controlador de la cámara desde el Administrador de dispositivos."
       ],
       "herramientas": [
@@ -299,7 +299,7 @@
       "palabras": ["encender", "enciende", "prender", "arranque", "arranca", "inicio", "iniciar", "tarda", "programas de inicio"],
       "pasos": [
         "Abre el Administrador de tareas > Aplicaciones de arranque y desactiva lo que no necesitas al encender (clic derecho > Deshabilitar). No se desinstala nada. Si no sabes qué es un programa, déjalo como está.",
-        "Instala las actualizaciones de Windows (puede pedir reiniciar: guarda tu trabajo antes).",
+        "Las actualizaciones pueden pedir reiniciar: guarda tu trabajo antes. Después instala las actualizaciones de Windows.",
         "Deja libre al menos un 10 % del disco.",
         "Si Windows está en un disco mecánico (HDD), cambiarlo por un SSD es la mejora más grande."
       ],
@@ -317,7 +317,7 @@
         "Haz doble clic en él: en «Estado del dispositivo» verás el código de error. Guara también lo muestra.",
         "Haz clic derecho en él > Actualizar controlador > Buscar controladores automáticamente.",
         "Si no se arregla, baja el controlador de la página oficial del fabricante de tu PC o del aparato.",
-        "Desconecta y vuelve a conectar el aparato (si es una memoria o un disco, usa «Expulsar» antes), guarda tu trabajo y reinicia la PC."
+        "Si es una memoria o un disco, usa «Expulsar» antes. Después desconecta y vuelve a conectar el aparato, guarda tu trabajo y reinicia la PC."
       ],
       "herramientas": [
         { "texto": "Abrir el Administrador de dispositivos", "abrir": "devmgmt.msc" }
@@ -332,7 +332,7 @@
         "Si en Guara la tarjeta aparece como «Adaptador de pantalla básico de Microsoft», a Windows le falta su controlador.",
         "Busca en Windows Update > Opciones avanzadas > Actualizaciones opcionales.",
         "O bájalo de la página oficial de AMD, NVIDIA o Intel, o de la del fabricante de tu laptop.",
-        "Reinicia la PC al terminar de instalarlo."
+        "Al terminar de instalarlo, guarda tu trabajo y reinicia la PC."
       ],
       "herramientas": [
         { "texto": "Abrir Actualizaciones opcionales", "abrir": "ms-settings:windowsupdate-optionalupdates" },
@@ -363,7 +363,7 @@
         "Pulsa Windows + Ctrl + Mayús + B: reinicia el controlador de video (suena un pitido y la pantalla parpadea).",
         "Revisa que el monitor esté encendido y que el cable esté bien conectado en los dos extremos.",
         "Pulsa Windows + P y elige «Solo pantalla de PC» o «Duplicar».",
-        "Si ves el puntero del mouse, pulsa Ctrl + Alt + Supr y reinicia desde el botón de encendido de la esquina.",
+        "Si ves el puntero del mouse, pulsa Ctrl + Alt + Supr y reinicia desde el botón de encendido de la esquina (lo que no hayas guardado puede perderse).",
         "Actualiza el controlador de la tarjeta gráfica."
       ],
       "herramientas": [
