@@ -741,7 +741,7 @@ void PanelSoluciones::MostrarDetalle(const soluciones::Solucion* s)
         titulo->SetLabelText(s->titulo);
         titulo->SetFont(titulo->GetFont().Bold().Scaled(1.35f));
         v->Add(titulo, 0, wxBOTTOM, FromDIP(6));
-        auto* nota = ajuste_->Texto(detalle_, L"Prueba estos pasos en orden. Son seguros: Guara no cambia nada por ti.", restar);
+        auto* nota = ajuste_->Texto(detalle_, L"Prueba estos pasos en orden. Son pasos comunes y de poco riesgo, y los haces tú: Guara no cambia nada. Si un paso borra algo o reinicia la PC, lo dice; guarda tu trabajo antes de reiniciar.", restar);
         nota->SetForegroundColour(tema::TextoSuave());
         v->Add(nota, 0, wxBOTTOM, FromDIP(14));
 

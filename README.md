@@ -34,7 +34,7 @@ Cada parte se muestra en una tarjeta con un semáforo: verde **Bien**, amarillo 
 ## Buscador de soluciones
 
 En la pestaña **Buscar soluciones** escribes lo que le pasa a tu PC (por ejemplo «lenta», «sonido», «wifi» o
-«pantalla azul») y ves pasos cortos y seguros, un botón que abre la herramienta de Windows que corresponde y un
+«pantalla azul») y ves pasos cortos, comunes y de poco riesgo, que haces tú (Guara no cambia nada; si un paso borra algo o reinicia la PC, lo dice), un botón que abre la herramienta de Windows que corresponde y un
 enlace a la página de ayuda oficial de Microsoft. Hay 24 problemas comunes. Los pasos nunca piden editar el
 registro, borrar archivos de Windows ni apagar el antivirus. Los botones solo abren una lista fija de
 herramientas de Windows, y los enlaces solo llevan a `support.microsoft.com` o `learn.microsoft.com`.

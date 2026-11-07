@@ -25,7 +25,7 @@
       "palabras": ["disco", "lleno", "espacio", "almacenamiento", "liberar", "sin espacio", "unidad c", "memoria llena"],
       "pasos": [
         "Abre Configuración > Sistema > Almacenamiento y mira qué ocupa más espacio.",
-        "Entra en «Archivos temporales» o en «Recomendaciones de limpieza» y borra lo que Windows te sugiere. Revisa antes la carpeta Descargas por si hay algo que quieras guardar.",
+        "Entra en «Archivos temporales» o en «Recomendaciones de limpieza» y borra lo que Windows te sugiere (eso se borra para siempre). Revisa antes la carpeta Descargas por si hay algo que quieras guardar.",
         "Vacía la Papelera de reciclaje, después de revisar que no tenga nada que necesites.",
         "Desinstala los programas y juegos que ya no uses (Configuración > Aplicaciones). Si no sabes qué es un programa, déjalo.",
         "Pasa fotos y videos a un disco externo o a la nube."
@@ -60,7 +60,7 @@
         "Revisa que el Wi-Fi esté activado y que el modo avión esté apagado (junto al reloj).",
         "Apaga el módem o router, espera 30 segundos y vuelve a encenderlo.",
         "Si otros aparatos tampoco tienen internet, el problema es del servicio: llama a tu proveedor.",
-        "En Configuración > Red e Internet > Wi-Fi > Administrar redes conocidas, elige tu red, pulsa «Olvidar» y vuelve a conectarte con la contraseña.",
+        "En Configuración > Red e Internet > Wi-Fi > Administrar redes conocidas, elige tu red, pulsa «Olvidar» y vuelve a conectarte. Antes, ten a mano la contraseña del Wi-Fi (suele estar en una etiqueta debajo del router): sin ella no podrás volver a conectarte.",
         "Acércate al router para descartar que la señal sea débil."
       ],
       "herramientas": [
