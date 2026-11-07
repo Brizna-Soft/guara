@@ -8,7 +8,7 @@
       "palabras": ["lenta", "lento", "lentitud", "tarda", "se traba", "trabada", "congela", "pegada", "cuelga", "rendimiento", "rápida"],
       "pasos": [
         "Guarda tu trabajo y reinicia la PC (Inicio > Encendido > Reiniciar). «Apagar» no siempre limpia la memoria.",
-        "Abre el Administrador de tareas (Ctrl + Mayús + Esc) y mira qué programa usa más CPU, memoria o disco.",
+        "Abre el Administrador de tareas (Ctrl + Mayús + Esc) y mira qué programa usa más procesador, memoria o disco.",
         "Cierra los programas que no estés usando, sobre todo los navegadores con muchas pestañas.",
         "Desactiva los programas que arrancan solos y no necesitas (Administrador de tareas > Aplicaciones de arranque). Si no sabes qué es un programa, déjalo como está.",
         "Deja libre al menos un 10 % del disco.",
@@ -32,7 +32,8 @@
       ],
       "herramientas": [
         { "texto": "Abrir Almacenamiento", "abrir": "ms-settings:storagesense" },
-        { "texto": "Abrir el Liberador de espacio", "abrir": "cleanmgr" }
+        { "texto": "Abrir el Liberador de espacio", "abrir": "cleanmgr" },
+        { "texto": "Abrir Aplicaciones instaladas", "abrir": "ms-settings:appsfeatures" }
       ],
       "enlace": "https://support.microsoft.com/es-es/windows/experience/storage-filemanagement/free-up-drive-space-in-windows"
     },
@@ -76,7 +77,7 @@
         "Anota el código que aparece (por ejemplo, DPC_WATCHDOG_VIOLATION). Guara lo muestra en «Apagados inesperados y pantallas azules» si quedó registrado.",
         "Piensa qué cambió justo antes: un programa, un controlador o un aparato nuevo. Si es una memoria o un disco, espera a que terminen las copias y usa «Expulsar». Después quítalo o desconéctalo y prueba.",
         "Las actualizaciones pueden pedir reiniciar: guarda tu trabajo antes. Instala las actualizaciones de Windows, también las opcionales de controladores.",
-        "Actualiza el controlador de la tarjeta gráfica y el del chipset desde la página del fabricante de tu PC o de tu tarjeta madre.",
+        "Actualiza el controlador de la tarjeta gráfica y el de la tarjeta madre (chipset) desde la página del fabricante de tu PC o de tu tarjeta madre.",
         "La PC se reinicia para esta prueba: guarda tu trabajo antes. Después revisa la memoria con el Diagnóstico de memoria de Windows.",
         "Si pasa al jugar o con mucho trabajo, revisa que la PC no se caliente."
       ],
@@ -133,7 +134,7 @@
       "herramientas": [
         { "texto": "Abrir el Administrador de tareas", "abrir": "taskmgr" }
       ],
-      "enlace": "https://support.microsoft.com/es-es/surface/performance/what-to-try-if-your-surface-feels-too-warm"
+      "enlace": "https://support.microsoft.com/es-es/windows/experience/performance-optimization/tips-to-improve-pc-performance-in-windows"
     },
     {
       "id": "bateria",
@@ -165,7 +166,7 @@
       "herramientas": [
         { "texto": "Abrir el Administrador de dispositivos", "abrir": "devmgmt.msc" }
       ],
-      "enlace": "https://support.microsoft.com/es-es/windows/hardware/usb/fix-usb-c-problems-in-windows"
+      "enlace": "https://support.microsoft.com/es-es/windows/update-drivers-manually-in-windows-ec62f46c-ff14-c91d-eead-d7126dc1f7b6"
     },
     {
       "id": "microfono",
@@ -240,7 +241,8 @@
         "Si encuentra algo, sigue sus instrucciones para quitarlo.",
         "Si el problema sigue: este examen reinicia la PC y tarda unos 15 minutos, así que guarda tu trabajo antes. Después, en «Opciones de examen», elige «Examen de Microsoft Defender sin conexión».",
         "Revisa en Configuración > Aplicaciones si hay programas que se instalaron hace poco sin que tú quisieras. Si no sabes qué es uno, pregunta antes de quitarlo.",
-        "Si crees que te robaron contraseñas, cámbialas desde otro aparato de confianza."
+        "Si crees que te robaron contraseñas, cámbialas desde otro aparato de confianza.",
+        "Si una ventana te pide llamar a un número o pagar para «arreglar tu PC», ciérrala: es una estafa. Microsoft nunca te pide eso."
       ],
       "herramientas": [
         { "texto": "Abrir Seguridad de Windows", "abrir": "windowsdefender:" }

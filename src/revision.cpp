@@ -234,19 +234,18 @@ namespace
                 "windows-10"));
         if (hay)
         {
-            if (dias > 120)
-                s.avisos.push_back(NuevoAviso(Estado::Problema,
-                    Formato(L"La última actualización se instaló hace %lld días. Abre Windows Update y busca actualizaciones.", dias),
-                    "windows-update"));
-            else if (dias > 60)
+            // Win32_QuickFixEngineering no siempre ve todas las actualizaciones de Windows 11: por eso «parece» y nunca
+            // en rojo con este solo dato
+            if (dias > 60)
                 s.avisos.push_back(NuevoAviso(Estado::Revisa,
-                    Formato(L"La última actualización se instaló hace %lld días. Busca actualizaciones en Windows Update.", dias),
+                    Formato(L"Parece que la última actualización se instaló hace %lld días. Abre Windows Update y busca "
+                            L"actualizaciones para estar seguro.", dias),
                     "windows-update"));
             else
                 s.avisos.push_back(NuevoAviso(Estado::Bien, L"Windows tiene actualizaciones recientes."));
         }
         long long diasEncendida = static_cast<long long>(segundos / 86400);
-        if (diasEncendida >= 7)
+        if (diasEncendida >= 14)
             s.avisos.push_back(NuevoAviso(Estado::Revisa,
                 Formato(L"Hace %lld días que Windows no se reinicia. Usa «Reiniciar» de vez en cuando: «Apagar» no siempre limpia todo.", diasEncendida),
                 "pc-lenta"));
@@ -606,13 +605,13 @@ namespace
         case 22: return L"Está desactivado.";
         case 24: return L"No está presente, no funciona bien o le faltan controladores.";
         case 28: return L"No tiene su controlador instalado.";
-        case 29: return L"Está desactivado porque el firmware de la PC no le dio recursos.";
+        case 29: return L"Está desactivado porque el programa interno de la tarjeta madre (BIOS) no le dio recursos.";
         case 31: return L"Windows no puede cargar su controlador.";
         case 32: return L"Su controlador está desactivado.";
         case 33: return L"Windows no sabe qué recursos necesita.";
         case 34: return L"Windows no puede saber cómo configurarlo.";
-        case 35: return L"Al firmware de la PC le falta información para usarlo.";
-        case 36: return L"Tiene un conflicto de interrupciones (IRQ).";
+        case 35: return L"Al programa interno de la tarjeta madre (BIOS) le falta información para usarlo.";
+        case 36: return L"Choca con otro aparato por los recursos de la PC (IRQ).";
         case 37: return L"Windows no puede iniciar su controlador.";
         case 38: return L"No carga porque otra copia de su controlador sigue en memoria.";
         case 39: return L"Falta su controlador o está dañado.";
@@ -628,7 +627,7 @@ namespace
         case 50: return L"Windows no puede aplicar todas sus propiedades.";
         case 51: return L"Está esperando a otro aparato.";
         case 52: return L"Windows no puede comprobar la firma digital de su controlador.";
-        case 53: return L"Está reservado por el depurador de Windows.";
+        case 53: return L"Lo está usando una herramienta de Windows para programadores (el depurador).";
         case 54: return L"Falló y se está reiniciando.";
         case 56: return L"Windows todavía lo está configurando.";
         default: return Formato(L"Tiene el error número %lld.", c);
@@ -1170,13 +1169,18 @@ namespace
             if (const wchar_t* pista = PistaCodigo(it->first)) masComun += std::wstring(L": ") + pista;
             masComun += L")";
         }
+        // Primero la frase simple; el código va al final, para el técnico
         if (azules >= 2)
             s.avisos.push_back(NuevoAviso(Estado::Problema,
-                Formato(L"Windows tuvo %d pantallas azules en 30 días", azules) + masComun + L". Sigue los pasos de la solución.",
+                Formato(L"La PC mostró %d pantallas azules en 30 días. Casi siempre falla un controlador (el programa que "
+                        L"hace funcionar una pieza). Pulsa «Ver solución».", azules)
+                    + (masComun.empty() ? std::wstring() : L" Para el técnico" + masComun + L"."),
                 "pantalla-azul"));
         else if (azules == 1)
             s.avisos.push_back(NuevoAviso(Estado::Revisa,
-                L"Windows tuvo 1 pantalla azul en 30 días" + masComun + L". Si se repite, sigue los pasos de la solución.", "pantalla-azul"));
+                L"La PC mostró 1 pantalla azul en 30 días. Si se repite, pulsa «Ver solución»."
+                    + (masComun.empty() ? std::wstring() : L" Para el técnico" + masComun + L"."),
+                "pantalla-azul"));
         if (apagados >= 3)
             s.avisos.push_back(NuevoAviso(Estado::Problema,
                 Formato(L"La PC se apagó %d veces sin cerrar Windows. Puede ser la corriente, el calor o que se colgó.", apagados),

@@ -176,6 +176,6 @@ namespace wmi
         default:
             break;
         }
-        return texto::Formato(L"Windows respondió con el error 0x%08X.", static_cast<unsigned>(hr));
+        return texto::Formato(L"Windows no pudo dar este dato. Si vuelve a pasar, reinicia la PC y revisa otra vez (código 0x%08X).", static_cast<unsigned>(hr));
     }
 }

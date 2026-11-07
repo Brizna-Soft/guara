@@ -428,7 +428,7 @@ void PanelRevision::ConstruirEspera()
     auto* titulo = new wxStaticText(t, wxID_ANY, L"Revisando tu PC...");
     titulo->SetFont(titulo->GetFont().Bold().Scaled(1.4f));
     v->Add(titulo, 0, wxLEFT | wxRIGHT | wxTOP, Relleno());
-    esperaTexto_ = new wxStaticText(t, wxID_ANY, L"Esto toma unos segundos. Guara solo lee datos: no cambia nada en tu PC.");
+    esperaTexto_ = new wxStaticText(t, wxID_ANY, L"Esto puede tardar hasta un minuto. Guara solo lee datos: no cambia nada en tu PC.");
     esperaTexto_->SetForegroundColour(tema::TextoSuave());
     v->Add(esperaTexto_, 0, wxALL, Relleno());
     t->SetSizer(v);
@@ -641,7 +641,7 @@ void PanelRevision::GuardarInforme()
     if (f.Create(d.GetPath(), true) && f.Write(datos.data(), datos.size()) == datos.size())
         estado_->SetLabelText(L"Informe guardado en " + wxFileName(d.GetPath()).GetFullName() + L".");
     else
-        wxMessageBox(L"No pude guardar el informe en esa carpeta. Prueba con otra.", L"Guardar informe", wxOK | wxICON_WARNING, this);
+        ayuda::Aviso(L"No pude guardar el informe en esa carpeta. Prueba con otra, por ejemplo Documentos.", L"Guardar informe", wxOK | wxICON_WARNING, this);
 }
 
 // ==================================================================== pestaña «Buscar soluciones»

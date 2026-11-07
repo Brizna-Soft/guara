@@ -66,10 +66,11 @@ herramientas de Windows, y los enlaces solo llevan a `support.microsoft.com` o `
 
 1. Baja `Guara-0.1.1-x64.zip` desde [Versiones (Releases)](https://github.com/Brizna-Soft/guara/releases).
 2. Descomprímelo y abre `Guara.exe`.
-3. Espera unos segundos mientras dice «Revisando...».
+3. Espera mientras dice «Revisando...». Puede tardar hasta un minuto.
 
-Como el programa es nuevo y todavía no tiene firma digital, Windows puede mostrar un aviso de SmartScreen.
-Puedes comprobar que el archivo es el original con su huella SHA256 (está en el archivo `.sha256` de cada versión).
+> Si Windows muestra «Windows protegió su PC», pulsa **Más información** y después **Ejecutar de todas formas**.
+Pasa porque el programa es nuevo y todavía no tiene firma digital. Puedes comprobar que el archivo es el original
+con su huella SHA256 (está en el archivo `.sha256` de cada versión).
 
 ## Cómo reportar problemas
 
