@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "nota": "Lista del buscador de soluciones de Guara. Cada solución tiene un id (no cambiarlo: los avisos lo usan), un título, palabras para buscar, pasos seguros, botones que abren una herramienta de Windows y un enlace a una página oficial de Microsoft. Valores permitidos en «abrir»: ms-settings:..., windowsdefender:, taskmgr, taskmgr-inicio, devmgmt.msc, cleanmgr y mdsched.",
+  "nota": "Lista del buscador de soluciones de Guara. Cada solución tiene un id (no cambiarlo: los avisos lo usan), un título, palabras para buscar, pasos comunes y de poco riesgo (si uno borra algo, reinicia la PC o desconecta algo, lo dice), botones que abren una herramienta de Windows y un enlace a una página oficial de Microsoft. Valores permitidos en «abrir»: ms-settings:..., windowsdefender:, taskmgr, taskmgr-inicio, devmgmt.msc, cleanmgr y mdsched.",
   "soluciones": [
     {
       "id": "pc-lenta",
@@ -12,7 +12,7 @@
         "Cierra los programas que no estés usando, sobre todo los navegadores con muchas pestañas.",
         "Desactiva los programas que arrancan solos y no necesitas (Administrador de tareas > Aplicaciones de arranque). Si no sabes qué es un programa, déjalo como está.",
         "Deja libre al menos un 10 % del disco.",
-        "Instala las actualizaciones de Windows y revisa que no haya virus con Seguridad de Windows."
+        "Instala las actualizaciones de Windows (puede pedir reiniciar: guarda tu trabajo antes) y revisa que no haya virus con Seguridad de Windows."
       ],
       "herramientas": [
         { "texto": "Abrir el Administrador de tareas", "abrir": "taskmgr" }
@@ -25,7 +25,7 @@
       "palabras": ["disco", "lleno", "espacio", "almacenamiento", "liberar", "sin espacio", "unidad c", "memoria llena"],
       "pasos": [
         "Abre Configuración > Sistema > Almacenamiento y mira qué ocupa más espacio.",
-        "Entra en «Archivos temporales» o en «Recomendaciones de limpieza» y borra lo que Windows te sugiere (eso se borra para siempre). Revisa antes la carpeta Descargas por si hay algo que quieras guardar.",
+        "Entra en «Archivos temporales» o en «Recomendaciones de limpieza» revisa cada cosa antes de marcarla y borra solo lo que estés seguro de no necesitar (se borra para siempre). Ojo con la carpeta Descargas y con «Instalación anterior de Windows»: si la borras, ya no podrás volver a esa versión.",
         "Vacía la Papelera de reciclaje, después de revisar que no tenga nada que necesites.",
         "Desinstala los programas y juegos que ya no uses (Configuración > Aplicaciones). Si no sabes qué es un programa, déjalo.",
         "Pasa fotos y videos a un disco externo o a la nube."
@@ -58,9 +58,9 @@
       "palabras": ["wifi", "wi-fi", "internet", "red", "conexión", "conectar", "router", "módem", "señal", "inalámbrica", "sin internet"],
       "pasos": [
         "Revisa que el Wi-Fi esté activado y que el modo avión esté apagado (junto al reloj).",
-        "Apaga el módem o router, espera 30 segundos y vuelve a encenderlo.",
+        "Apaga el módem o router, espera 30 segundos y vuelve a encenderlo. Mientras tanto, todos los aparatos de la casa se quedan sin internet.",
         "Si otros aparatos tampoco tienen internet, el problema es del servicio: llama a tu proveedor.",
-        "En Configuración > Red e Internet > Wi-Fi > Administrar redes conocidas, elige tu red, pulsa «Olvidar» y vuelve a conectarte. Antes, ten a mano la contraseña del Wi-Fi (suele estar en una etiqueta debajo del router): sin ella no podrás volver a conectarte.",
+        "En Configuración > Red e Internet > Wi-Fi > Administrar redes conocidas, elige tu red, y antes de seguir ten a mano la contraseña del Wi-Fi (suele estar en una etiqueta debajo del router): sin ella no podrás volver a conectarte. Después pulsa «Olvidar» y vuelve a conectarte.",
         "Acércate al router para descartar que la señal sea débil."
       ],
       "herramientas": [
@@ -75,7 +75,7 @@
       "pasos": [
         "Anota el código que aparece (por ejemplo, DPC_WATCHDOG_VIOLATION). Guara lo muestra en «Apagados inesperados y pantallas azules» si quedó registrado.",
         "Piensa qué cambió justo antes: un programa, un controlador o un aparato nuevo. Quítalo o desconéctalo y prueba.",
-        "Instala las actualizaciones de Windows, también las opcionales de controladores.",
+        "Instala las actualizaciones de Windows, también las opcionales de controladores (puede pedir reiniciar: guarda tu trabajo antes).",
         "Actualiza el controlador de la tarjeta gráfica y el del chipset desde la página del fabricante de tu PC o de tu tarjeta madre.",
         "Revisa la memoria con el Diagnóstico de memoria de Windows. Guarda tu trabajo antes: la PC se reinicia para hacer la prueba.",
         "Si pasa al jugar o con mucho trabajo, revisa que la PC no se caliente."
@@ -94,7 +94,7 @@
         "Revisa que tengas internet y al menos 10 GB libres en el disco C:.",
         "Reinicia la PC y vuelve a pulsar «Buscar actualizaciones».",
         "Usa el solucionador de Windows Update: Configuración > Sistema > Solucionar problemas > Otros solucionadores de problemas.",
-        "Desconecta los USB y discos externos que no necesites mientras se actualiza.",
+        "Desconecta los USB y discos externos que no necesites mientras se actualiza. Antes, espera a que terminen las copias y usa «Expulsar» en las memorias y los discos.",
         "Si sale un código de error (por ejemplo, 0x80070002), búscalo en la página de ayuda de Microsoft."
       ],
       "herramientas": [
@@ -143,7 +143,7 @@
         "Baja el brillo de la pantalla.",
         "Activa el ahorro de batería en Configuración > Sistema > Energía y batería.",
         "En esa misma página, mira qué aplicaciones gastan más batería y ciérralas si no las usas.",
-        "Desconecta los aparatos USB que no uses y apaga el Bluetooth si no lo necesitas.",
+        "Desconecta los aparatos USB que no uses (en memorias y discos, espera a que terminen las copias y usa «Expulsar») y apaga el Bluetooth si no lo necesitas.",
         "Mira la «Salud» de la batería en Guara: si está por debajo del 50 %, conviene cambiarla."
       ],
       "herramientas": [
@@ -156,7 +156,7 @@
       "titulo": "No reconoce la memoria USB u otro aparato USB",
       "palabras": ["usb", "memoria usb", "pendrive", "no reconoce", "no detecta", "puerto", "disco externo", "celular", "mouse", "ratón"],
       "pasos": [
-        "Prueba otro puerto USB. En una PC de escritorio, mejor los de atrás.",
+        "Prueba otro puerto USB. En una PC de escritorio, mejor los de atrás. Si es una memoria o un disco, usa «Expulsar» antes de sacarlo.",
         "Prueba el aparato en otra PC: si tampoco funciona, puede estar dañado.",
         "Quita los concentradores (hubs) y las extensiones, y conéctalo directo.",
         "Abre el Administrador de dispositivos y busca un triángulo amarillo: clic derecho > Actualizar controlador.",
@@ -268,7 +268,7 @@
       "palabras": ["bluetooth", "audífonos inalámbricos", "parlante bluetooth", "emparejar", "vincular", "control", "mouse inalámbrico"],
       "pasos": [
         "Revisa que el Bluetooth esté activado en la PC y que el aparato esté encendido y en modo de emparejamiento.",
-        "En Configuración > Bluetooth y dispositivos, quita el aparato y vuelve a agregarlo.",
+        "En Configuración > Bluetooth y dispositivos, quita el aparato y vuelve a agregarlo. Al agregarlo puede pedir un PIN (mira el manual del aparato). Si es tu único mouse o teclado, ten a mano uno con cable antes de quitarlo.",
         "Revisa que el aparato tenga batería y que esté cerca de la PC.",
         "Actualiza el controlador del Bluetooth desde el Administrador de dispositivos y reinicia."
       ],
@@ -299,7 +299,7 @@
       "palabras": ["encender", "enciende", "prender", "arranque", "arranca", "inicio", "iniciar", "tarda", "programas de inicio"],
       "pasos": [
         "Abre el Administrador de tareas > Aplicaciones de arranque y desactiva lo que no necesitas al encender (clic derecho > Deshabilitar). No se desinstala nada. Si no sabes qué es un programa, déjalo como está.",
-        "Instala las actualizaciones de Windows.",
+        "Instala las actualizaciones de Windows (puede pedir reiniciar: guarda tu trabajo antes).",
         "Deja libre al menos un 10 % del disco.",
         "Si Windows está en un disco mecánico (HDD), cambiarlo por un SSD es la mejora más grande."
       ],
@@ -317,7 +317,7 @@
         "Haz doble clic en él: en «Estado del dispositivo» verás el código de error. Guara también lo muestra.",
         "Haz clic derecho en él > Actualizar controlador > Buscar controladores automáticamente.",
         "Si no se arregla, baja el controlador de la página oficial del fabricante de tu PC o del aparato.",
-        "Desconecta y vuelve a conectar el aparato, y reinicia la PC."
+        "Desconecta y vuelve a conectar el aparato (si es una memoria o un disco, usa «Expulsar» antes), guarda tu trabajo y reinicia la PC."
       ],
       "herramientas": [
         { "texto": "Abrir el Administrador de dispositivos", "abrir": "devmgmt.msc" }
