@@ -72,6 +72,21 @@ herramientas de Windows, y los enlaces solo llevan a `support.microsoft.com` o `
 Pasa porque el programa es nuevo y todavía no tiene firma digital. Puedes comprobar que el archivo es el original
 con su huella SHA256 (está en el archivo `.sha256` de cada versión).
 
+## Si Windows no deja abrir el programa
+
+Nuestros programas todavía no tienen firma digital, y por eso Windows puede frenarlos de dos maneras:
+
+- **«Windows protegió su PC» (SmartScreen).** Pulsa **Más información** y después **Ejecutar de todas formas**.
+- **«Control inteligente de aplicaciones».** Si lo tienes activado, puede bloquear el programa *sin* darte la opción
+  de abrirlo igual. Microsoft explica que no se puede permitir un solo programa: la única salida es apagar esa
+  protección en **Seguridad de Windows > Control de aplicaciones y exploradores**. Es tu decisión; con Windows al día
+  se puede volver a encender después.
+  ([Preguntas frecuentes de Microsoft](https://support.microsoft.com/es-es/topic/smart-app-control-frequently-asked-questions-285ea03d-fa88-4d56-882e-6698afdb7003))
+
+Estamos preparando la firma digital para que esto deje de pasar. Mientras tanto, puedes comprobar que el archivo es
+el original con su huella SHA-256 (el archivo `.sha256` de cada versión) y, en las versiones nuevas, con
+`gh attestation verify <archivo.zip> --repo Brizna-Soft/guara`.
+
 ## Cómo reportar problemas
 
 Entra en [Reportar un problema](https://github.com/Brizna-Soft/guara/issues/new/choose) (también está en el menú
