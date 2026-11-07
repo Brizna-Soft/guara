@@ -64,7 +64,7 @@ herramientas de Windows, y los enlaces solo llevan a `support.microsoft.com` o `
 
 ## Cómo usarlo
 
-1. Baja `Guara-0.1.0-x64.zip` desde [Versiones (Releases)](https://github.com/Brizna-Soft/guara/releases).
+1. Baja `Guara-0.1.1-x64.zip` desde [Versiones (Releases)](https://github.com/Brizna-Soft/guara/releases).
 2. Descomprímelo y abre `Guara.exe`.
 3. Espera unos segundos mientras dice «Revisando...».
 
