@@ -363,7 +363,7 @@
         "Pulsa Windows + Ctrl + Mayús + B: reinicia el controlador de video (suena un pitido y la pantalla parpadea).",
         "Revisa que el monitor esté encendido y que el cable esté bien conectado en los dos extremos.",
         "Pulsa Windows + P y elige «Solo pantalla de PC» o «Duplicar».",
-        "Si ves el puntero del mouse, pulsa Ctrl + Alt + Supr y reinicia desde el botón de encendido de la esquina (lo que no hayas guardado puede perderse).",
+        "Si ves el puntero del mouse: reiniciar puede hacer perder lo que no hayas guardado, así que, si puedes, guarda tu trabajo antes. Después pulsa Ctrl + Alt + Supr y reinicia desde el botón de encendido de la esquina.",
         "Actualiza el controlador de la tarjeta gráfica."
       ],
       "herramientas": [
