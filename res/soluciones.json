@@ -133,8 +133,7 @@
       ],
       "herramientas": [
         { "texto": "Abrir el Administrador de tareas", "abrir": "taskmgr" }
-      ],
-      "enlace": "https://support.microsoft.com/es-es/windows/experience/performance-optimization/tips-to-improve-pc-performance-in-windows"
+      ]
     },
     {
       "id": "bateria",
