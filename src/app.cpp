@@ -4,6 +4,8 @@
 
 #include <wx/app.h>
 
+#include "ayuda.hpp"
+
 class App : public wxApp
 {
 public:
@@ -23,6 +25,7 @@ public:
     int OnExit() override
     {
         AppTermina();
+        ayuda::Cerrar();   // «Buscar actualización» ya no manda nada a la ventana
         return wxApp::OnExit();
     }
 };

@@ -808,9 +808,10 @@ Ventana::Ventana() : wxFrame(nullptr, wxID_ANY, L"Guara: revisa tu PC y te dice 
     archivo->AppendSeparator();
     archivo->Append(wxID_EXIT, L"&Salir");
     barra->Append(archivo, L"&Archivo");
-    barra->Append(ayuda::CrearMenu(this, L"Guara revisa tu PC sin cambiar nada y te explica en español sencillo qué tiene, "
-                                         L"qué anda mal y qué hacer."),
-                  L"A&yuda");
+    ayuda::Opciones datosAyuda;
+    datosAyuda.descripcion = L"Guara revisa tu PC sin cambiar nada y te explica en español sencillo qué tiene, qué anda mal y "
+                           L"qué hacer.";
+    ayuda::AgregarMenu(barra, this, datosAyuda);
     SetMenuBar(barra);
 
     auto* fondo = new wxPanel(this);
